@@ -15,10 +15,11 @@ import javax.swing.JOptionPane;
  * @author Microsoft
  */
 public class editSection extends javax.swing.JFrame {
-Connection con;
+    Connection con;
     PreparedStatement ps;
     ResultSet rs;
     String sql;
+    int idOfSection = 0;
     
     public editSection() {
         super("Edit Section");
@@ -251,7 +252,32 @@ Connection con;
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        
+        try{
+            con = DBConnection.connect();
+            Teacher t = new Teacher();
+            sql = "UPDATE sections set t1 = ?, t2 = ?, t3 = ?, t4 = ? where id = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, t.getTeacherId((String) jComboBox1.getSelectedItem()));
+            ps.setInt(2, t.getTeacherId((String) jComboBox3.getSelectedItem()));
+            ps.setInt(3, t.getTeacherId((String) jComboBox4.getSelectedItem()));
+            ps.setInt(4, t.getTeacherId((String) jComboBox2.getSelectedItem()));
+            ps.setInt(5, idOfSection);
+            ps.execute();
+            JOptionPane.showMessageDialog(null, "Section updated successfully");  
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        finally{
+            try {
+                rs.close();
+                ps.close();
+                con.close();
+            } 
+            catch (Exception e){
+               JOptionPane.showMessageDialog(null, e);  
+            } 
+        }        
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -264,7 +290,6 @@ Connection con;
             Teacher t = new Teacher();
             con = DBConnection.connect();
             String []teachers = new String[4];
-            int idOfSection = 0;
             sql = "SELECT id,t1,t2,t3,t4 from sections where sectionName = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, secName);
