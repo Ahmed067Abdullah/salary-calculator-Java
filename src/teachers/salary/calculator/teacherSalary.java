@@ -234,8 +234,8 @@ public class teacherSalary extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         int month = jComboBox5.getSelectedIndex();
-        String id = jTextField3.getText();
-        String name = jTextField4.getText().toLowerCase();
+        String id = jTextField3.getText().trim();
+        String name = jTextField4.getText().trim().toLowerCase();
         if(id.equals("") && name.equals("")){
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");            
         }
@@ -327,7 +327,7 @@ public class teacherSalary extends javax.swing.JFrame {
                 jTextField2.setText(course);
                 jTextField5.setText(Integer.toString(t_breakup));
                 jTextField1.setText(Integer.toString(count));
-                jTextField6.setText(Integer.toString(count * t_breakup));
+                jTextField6.setText(Long.toString(count * t_breakup));
             }
             catch(resultNotFoundException e){
                 JOptionPane.showMessageDialog(null, e);                

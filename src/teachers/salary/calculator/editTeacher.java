@@ -186,8 +186,8 @@ public class editTeacher extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        String id = jTextField5.getText();
-        String name = jTextField3.getText().toLowerCase();
+        String id = jTextField5.getText().trim();
+        String name = jTextField3.getText().trim().toLowerCase();
         if(id.equals("") && name.equals("")){
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");            
         }
@@ -285,7 +285,7 @@ public class editTeacher extends javax.swing.JFrame {
         if(idForUpdation < 1 || jTextField6.getText().trim().equals("")){
             JOptionPane.showMessageDialog(null, "Incomplete Details");              
         }else{
-            int t_breakup = Integer.parseInt(jTextField6.getText());
+            int t_breakup = Integer.parseInt(jTextField6.getText().trim());
             try{
                 con = DBConnection.connect();   
                 sql = "update teachers set t_breakup = ? where id = ?";

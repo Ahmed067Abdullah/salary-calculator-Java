@@ -375,7 +375,7 @@ public class addFeesData extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(textField1.getText().equals("") || textField2.getText().equals("") || textField3.getText().equals("") || (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()))
+        if(textField1.getText().trim().equals("") || textField2.getText().trim().equals("") || textField3.getText().trim().equals("") || (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()))
         {
             JOptionPane.showMessageDialog(null, "Enter All Details!");
         }
@@ -406,10 +406,10 @@ public class addFeesData extends javax.swing.JFrame {
             {
                 sql = "Insert into studentfees (std_name, slip_no, field, fees,t1,t2,t3,month) values(?,?,?,?,?,?,?,?);";
                 ps = con.prepareStatement(sql);
-                ps.setString(1,textField1.getText());
-                ps.setInt(2, Integer.parseInt(textField2.getText()));
+                ps.setString(1,textField1.getText().trim());
+                ps.setInt(2, Integer.parseInt(textField2.getText().trim()));
                 ps.setInt(3, field);
-                ps.setInt(4, Integer.parseInt(textField3.getText()));
+                ps.setInt(4, Integer.parseInt(textField3.getText().trim()));
                 ps.setInt(5, teachers[0]);
                 ps.setInt(6, teachers[1]);
                 ps.setInt(7, teachers[2]);
@@ -418,8 +418,9 @@ public class addFeesData extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(null, "Record Entered Successfully!"); 
                 textField1.setText("");
-                textField2.setText(textField2.getText().substring(0,textField2.getText().length()-1));
-                buttonGroup1.clearSelection();
+                textField2.setText(textField2.getText().substring(0,textField2.getText().trim().length()-1));
+//                buttonGroup1.clearSelection();
+                textField2.requestFocus();
             }
             catch(Exception e)
             {

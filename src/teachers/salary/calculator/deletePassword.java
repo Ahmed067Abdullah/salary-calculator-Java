@@ -99,8 +99,8 @@ public class deletePassword extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        String pass = jPasswordField1.getText();
-        if(pass.equals("ahmed")){
+        String pass = jPasswordField1.getText().trim();
+        if(pass.equals("Se067")){
             JOptionPane.showMessageDialog(null, "Access Granted");
              setVisible(false);
              deleteMenu dm = new deleteMenu();

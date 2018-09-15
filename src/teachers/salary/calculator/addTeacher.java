@@ -155,7 +155,7 @@ public class addTeacher extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         String name = jTextField3.getText().trim().toLowerCase();
         int course = jComboBox1.getSelectedIndex();
-        String pay = jTextField4.getText();
+        String pay = jTextField4.getText().trim();
         if(name.equals("") || pay.equals("")){
             JOptionPane.showMessageDialog(null, "Some details are missing");            
         }

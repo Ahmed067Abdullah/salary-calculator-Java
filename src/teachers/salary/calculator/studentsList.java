@@ -197,8 +197,8 @@ public class studentsList extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        String id = jTextField4.getText();
-        String name = jTextField3.getText().toLowerCase();
+        String id = jTextField4.getText().trim();
+        String name = jTextField3.getText().trim().toLowerCase();
         String conflict1;
         int month = jComboBox5.getSelectedIndex();
         if(month == 12){
