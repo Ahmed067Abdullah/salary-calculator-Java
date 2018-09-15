@@ -12,7 +12,7 @@ public class createSection extends javax.swing.JFrame {
     ResultSet rs;
     String sql;
     public createSection() {
-        super("Edit Section");
+        super("Create Section");
         initComponents();
         con = DBConnection.connect();
         sql = "Select t_name, t_course from teachers";

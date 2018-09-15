@@ -23,9 +23,7 @@ public class Teacher {
             while(rs.next()){
                 id = rs.getInt("id");
                 break;
-            }
-            return id;
-            
+            }   
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -41,6 +39,36 @@ public class Teacher {
             } 
         }
         return id;
+    }
+    
+    String getTeacherName(int id){
+        String name = "";
+        con = DBConnection.connect();
+        try{
+            String sql = "SELECT t_name from teachers where id = ? ";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                name = rs.getString("t_name");
+                break;
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        finally{
+            try {
+                rs.close();
+                ps.close();
+            } 
+            catch (Exception e)
+            {
+               JOptionPane.showMessageDialog(null, e);  
+            } 
+        }
+        return name;
     }
     
     String capitalizeTeacherName(String name){
