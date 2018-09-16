@@ -16,6 +16,9 @@ public class addTeacher extends javax.swing.JFrame {
         initComponents();
     }
 
+    public boolean isNumeric(String str){
+        return str.matches("^\\d+$");  
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +68,11 @@ public class addTeacher extends javax.swing.JFrame {
         jTextField3.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
 
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
 
         jButton8.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jButton8.setText("Back");
@@ -159,6 +167,9 @@ public class addTeacher extends javax.swing.JFrame {
         if(name.equals("") || pay.equals("")){
             JOptionPane.showMessageDialog(null, "Some details are missing");            
         }
+        else if(!isNumeric(pay) || isNumeric(name)){
+            JOptionPane.showMessageDialog(null, "Invalin input");             
+        }
         else{
          try{
             con = DBConnection.connect();
@@ -201,6 +212,10 @@ public class addTeacher extends javax.swing.JFrame {
         }   
         }
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4ActionPerformed
 
     /**
      * @param args the command line arguments

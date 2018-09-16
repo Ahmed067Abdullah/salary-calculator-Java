@@ -35,7 +35,7 @@ public class loadingWindow extends javax.swing.JFrame implements Runnable{
                     addFeesData ob = new addFeesData();
                     ob.setVisible(true);
                 }
-                Thread.sleep(01);
+                Thread.sleep(40);
             }
         }
         catch(Exception e){

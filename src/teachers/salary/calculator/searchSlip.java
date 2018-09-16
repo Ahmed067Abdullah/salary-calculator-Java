@@ -157,6 +157,7 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel11.setText("Field");
 
+        textField10.setEditable(false);
         textField10.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
