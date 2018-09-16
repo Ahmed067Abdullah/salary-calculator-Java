@@ -37,6 +37,33 @@ public class Section {
             } 
         }
         return id;
+    }
+        public String getSectionName(int id){
+        String secName = "Not Found";
+        try{
+            sql = "SELECT sectionName from sections where id = ?";
+            con = DBConnection.connect();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, Integer.toString(id));
+            rs = ps.executeQuery();
+            while(rs.next()){
+               secName = rs.getString("sectionName");
+            }
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        finally{
+            try {
+                rs.close();
+                ps.close();
+            } 
+            catch (Exception e)
+            {
+               JOptionPane.showMessageDialog(null, e);  
+            } 
+        }
+        return secName;
 
     }
 }

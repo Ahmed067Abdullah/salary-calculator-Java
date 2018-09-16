@@ -17,6 +17,9 @@ public class addFeesData extends javax.swing.JFrame {
     public addFeesData() {
         super("New Reciept");
         initComponents();
+        textField3.setText("0");
+        textField4.setText("0");
+        textField5.setText("0");
         con = DBConnection.connect();
         sql = "Select sectionName from sections";
         try
@@ -315,9 +318,23 @@ public class addFeesData extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(textField1.getText().trim().equals("") || textField2.getText().trim().equals("") || textField3.getText().trim().equals("") || (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()))
+        if(
+            textField1.getText().trim().equals("") || 
+            textField2.getText().trim().equals("") || 
+            textField3.getText().trim().equals("") || 
+            textField4.getText().trim().equals("") || 
+            textField5.getText().trim().equals("") || 
+            (!jRadioButton1.isSelected() && !jRadioButton2.isSelected())
+        )
         {
             JOptionPane.showMessageDialog(null, "Enter All Details!");
+        }
+        else if(
+            textField1.getText().trim().equals("0") || 
+            textField2.getText().trim().equals("0") || 
+            textField3.getText().trim().equals("0")
+        ){
+          JOptionPane.showMessageDialog(null, "All fees can't be 0");
         }
         else
         {
@@ -375,6 +392,16 @@ public class addFeesData extends javax.swing.JFrame {
             catch(Exception e)
             {
                 JOptionPane.showMessageDialog(null, e);
+            }
+            finally{
+                try {
+                    rs.close();
+                    ps.close();
+//                    con.close();
+                }
+                catch (Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                }
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
