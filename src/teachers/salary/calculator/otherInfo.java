@@ -35,7 +35,7 @@ public class otherInfo extends javax.swing.JFrame {
             conflict1 = " and month = "+month;
             conflict2 = " where month = "+month;            
         }
-        int engStd, medStd,engCash, medCash,strtSlip,endSlip,totalSlips;
+        int engStd, medStd,engCash, medCash,engNotes,medNotes,engAd,medAd,strtSlip,endSlip,totalSlips;
         
         con = DBConnection.connect();
         try{
@@ -50,6 +50,29 @@ public class otherInfo extends javax.swing.JFrame {
             rs = ps.executeQuery();
             medStd = rs.getInt("medStd");
             medCash = rs.getInt("medCash");
+            
+            sql = "SELECT sum(notes_fees.fees) as 'engNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 0" + conflict1;
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            engNotes = rs.getInt("engNotes");
+            
+
+            sql = "SELECT sum(notes_fees.fees) as 'medNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 1 " + conflict1;
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            medNotes = rs.getInt("medNotes");
+
+            sql = "SELECT sum(admission_fees.fees) as 'engAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 0" + conflict1;
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            engAd = rs.getInt("engAd");
+            
+
+            sql = "SELECT sum(admission_fees.fees) as 'medAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 1 " + conflict1;
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            medAd = rs.getInt("medAd");
+
 
             sql = "SELECT slip_no from studentfees " + conflict2 + " order by id limit 1";
             ps = con.prepareStatement(sql);
@@ -69,14 +92,18 @@ public class otherInfo extends javax.swing.JFrame {
             textField13.setText(Integer.toString(strtSlip));
             textField14.setText(Integer.toString(endSlip));
             textField17.setText(Integer.toString(totalSlips));
-            
+
+            textField19.setText(Integer.toString(engNotes));
+            textField15.setText(Integer.toString(medNotes));
+            textField18.setText(Integer.toString(engAd));
+            textField16.setText(Integer.toString(medAd));            
             textField4.setText(Integer.toString(engStd));
             textField5.setText(Integer.toString(medStd));
             textField6.setText(Integer.toString(medStd + engStd));
             
             textField12.setText(Integer.toString(engCash));
             textField11.setText(Integer.toString(medCash));
-            textField10.setText(Integer.toString(medCash + engCash));
+            textField10.setText(Integer.toString(medCash + engCash + engNotes + medNotes + engAd + medAd));
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, "No Records Availible");
@@ -529,7 +556,6 @@ public class otherInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        
         int month = jComboBox5.getSelectedIndex();
         getInfo(month);
     }//GEN-LAST:event_jButton9ActionPerformed
