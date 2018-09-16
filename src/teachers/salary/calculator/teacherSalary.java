@@ -308,16 +308,24 @@ public class teacherSalary extends javax.swing.JFrame {
                     conflict = "Something Wrong";
                 }
                 
-                // Finding Students
+                //Finding Sections
+                ResultSet rs2;
                 int count = 0;
-                sql = "SELECT count(*) AS 'count' from studentfees where "+ conflict + " = ? and month = ? ";
+                sql = "SELECT id from sections where "+ conflict + " = ?";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, id);
-                ps.setInt(2, month);
                 rs = ps.executeQuery();
                 while(rs.next()){
-                    count = Integer.parseInt(rs.getString("count"));
-                    break;
+                    // Finding Students
+                    sql = "SELECT count(*) AS 'count' from studentfees where sectionId = ? and month = ? and fees > 0";
+                    ps = con.prepareStatement(sql);
+                    ps.setString(1, rs.getString("id"));
+                    ps.setInt(2, month);
+                    rs2 = ps.executeQuery();
+                    while(rs2.next()){
+                        count += Integer.parseInt(rs2.getString("count"));
+                        break;
+                    }
                 }
                 
                 Teacher t = new Teacher();

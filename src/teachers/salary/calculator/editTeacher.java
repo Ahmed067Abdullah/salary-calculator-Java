@@ -296,7 +296,7 @@ public class editTeacher extends javax.swing.JFrame {
                 
                 JOptionPane.showMessageDialog(null, "Record Updated Successfully");
                 setVisible(false);
-                menu m = new menu();
+                teacherMenu m = new teacherMenu();
                 m.setVisible(true);
                 
             }

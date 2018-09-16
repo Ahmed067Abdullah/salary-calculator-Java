@@ -48,6 +48,9 @@ public class addFeesData extends javax.swing.JFrame {
         }
     }
 
+    public boolean isNumeric(String str){
+        return str.matches("^\\d+$");  
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -318,89 +321,129 @@ public class addFeesData extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String slip_no = textField2.getText().trim();
+        String student_name = textField1.getText().trim();
+        String monFee = textField3.getText().trim();
+        String adFee = textField4.getText().trim();
+        String noteFee = textField5.getText().trim();
+        
+        int slip_noI,monFeeI,adFeeI,noteFeeI;
+ 
         if(
-            textField1.getText().trim().equals("") || 
-            textField2.getText().trim().equals("") || 
-            textField3.getText().trim().equals("") || 
-            textField4.getText().trim().equals("") || 
-            textField5.getText().trim().equals("") || 
+            slip_no.equals("") || 
+            student_name.equals("") || 
+            monFee.equals("") || 
+            adFee.equals("") || 
+            noteFee.equals("") || 
             (!jRadioButton1.isSelected() && !jRadioButton2.isSelected())
         )
         {
             JOptionPane.showMessageDialog(null, "Enter All Details!");
         }
         else if(
-            textField1.getText().trim().equals("0") || 
-            textField2.getText().trim().equals("0") || 
-            textField3.getText().trim().equals("0")
+            monFee.equals("0") && 
+            adFee.equals("0") && 
+            noteFee.equals("0")
         ){
           JOptionPane.showMessageDialog(null, "All fees can't be 0");
         }
+        else if(
+            !(isNumeric(monFee) && 
+              isNumeric(adFee) && 
+              isNumeric(noteFee) && 
+              isNumeric(slip_no) &&
+              !isNumeric(student_name))
+        ){
+          JOptionPane.showMessageDialog(null, "Invalid inputs");            
+        }
         else
         {
-            try
-            {
-                // Checking for duplicate slip no
-                boolean flag = false;
-                String inputId = textField2.getText().trim();
-                sql = "SELECT id from studentfees where slip_no = ?";
-                ps = con.prepareStatement(sql);
-                ps.setString(1, inputId);
-                rs = ps.executeQuery();
-                while(rs.next()){
-                    flag = true;
-                }
-                if(flag)
-                    JOptionPane.showMessageDialog(null, "Slip number already exists!");
-                else{
-                    Integer field;
-                    if(jRadioButton1.isSelected())
-                        field = 0;
-                    else if(jRadioButton2.isSelected())
-                        field = 1;
-                    else
-                        field = 2;
-            
-            
-                    int month = jComboBox5.getSelectedIndex();
-                    Section s = new Section();
-                     
-                    sql = "Insert into studentfees (std_name, slip_no, field, fees,month,sectionId) values(?,?,?,?,?,?);";
+            slip_noI = Integer.parseInt(slip_no);
+            monFeeI = Integer.parseInt(monFee);
+            adFeeI = Integer.parseInt(adFee);
+            noteFeeI = Integer.parseInt(noteFee);
+            if(slip_noI < 0 || monFeeI < 0 || adFeeI < 0 || noteFeeI < 0){
+                JOptionPane.showMessageDialog(null, "Negative values are not allowed");         
+            }else{
+                try
+                {
+                    // Checking for duplicate slip no
+                    boolean flag = false;
+                    sql = "SELECT id from studentfees where slip_no = ?";
                     ps = con.prepareStatement(sql);
-                    ps.setString(1,textField1.getText().trim());
-                    ps.setInt(2, Integer.parseInt(inputId));
-                    ps.setInt(3, field);
-                    ps.setInt(4, Integer.parseInt(textField3.getText().trim()));
-                    ps.setInt(5, month);
-                    ps.setInt(6, s.getSectionId((String)jComboBox6.getSelectedItem()));
-                    ps.execute();
-                
-                    int generatedId = -1;
-                    rs = ps.getGeneratedKeys();
+                    ps.setString(1, slip_no);
+                    rs = ps.executeQuery();
                     while(rs.next()){
-                        generatedId = rs.getInt(1);
+                        flag = true;
                     }
-                    int id = Integer.parseInt(textField2.getText().trim());
-                    id++;
-                    JOptionPane.showMessageDialog(null, "Record Entered Successfully!! \nID = "+Integer.toString(generatedId)); 
-                    textField1.setText("");
-                    textField2.setText(Integer.toString(id));
-//                  buttonGroup1.clearSelection();
-                    textField1.requestFocus();   
-                }                
-            }
-            catch(Exception e)
-            {
-                JOptionPane.showMessageDialog(null, e);
-            }
-            finally{
-                try {
-                    rs.close();
-                    ps.close();
-//                    con.close();
+                    if(flag)
+                        JOptionPane.showMessageDialog(null, "Slip number already exists!");
+                    else{
+                        Integer field;
+                        if(jRadioButton1.isSelected())
+                            field = 0;
+                        else if(jRadioButton2.isSelected())
+                            field = 1;
+                        else
+                            field = 2;
+            
+                        int month = jComboBox5.getSelectedIndex();
+                        Section s = new Section();
+                     
+                        sql = "Insert into studentfees (std_name, slip_no, field, fees,month,sectionId) values(?,?,?,?,?,?);";
+                        ps = con.prepareStatement(sql);
+                        ps.setString(1,student_name);
+                        ps.setInt(2, slip_noI);
+                        ps.setInt(3, field);
+                        ps.setInt(4, monFeeI);
+                        ps.setInt(5, month);
+                        ps.setInt(6, s.getSectionId((String)jComboBox6.getSelectedItem()));
+                        ps.execute();
+                    
+                        int generatedId = -1;
+                        rs = ps.getGeneratedKeys();
+                        while(rs.next()){
+                            generatedId = rs.getInt(1);
+                        }                   
+                                        
+                        if(adFeeI > 0){
+                            sql = "Insert into admission_fees (slip_no, fees) values(?,?);";
+                            ps = con.prepareStatement(sql);
+                            ps.setString(1,slip_no);
+                            ps.setInt(2, adFeeI);
+                            ps.execute();                        
+                        }
+                    
+                        if(noteFeeI > 0){
+                            sql = "Insert into notes_fees (slip_no, fees) values(?,?);";
+                            ps = con.prepareStatement(sql);
+                            ps.setString(1,slip_no);
+                            ps.setInt(2, noteFeeI);
+                            ps.execute();    
+                        }
+                
+                        slip_noI++;
+                        JOptionPane.showMessageDialog(null, "Record Entered Successfully!! \nID = "+Integer.toString(generatedId)); 
+                        textField1.setText("");
+                        textField2.setText(Integer.toString(slip_noI));
+                        textField4.setText("0");
+                        textField5.setText("0");
+                        // buttonGroup1.clearSelection();
+                        textField1.requestFocus();   
+                    }                
                 }
-                catch (Exception e){
+                catch(Exception e){
                     JOptionPane.showMessageDialog(null, e);
+                }
+                finally{
+                    try {
+                        rs.close();
+                        ps.close();
+//                      con.close();
+                    }
+                    catch (Exception e){
+                        JOptionPane.showMessageDialog(null, e);
+                    }
                 }
             }
         }
