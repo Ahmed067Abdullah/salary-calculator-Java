@@ -30,6 +30,7 @@ public class Section {
             try {
                 rs.close();
                 ps.close();
+                con.close();
             } 
             catch (Exception e)
             {
@@ -57,6 +58,7 @@ public class Section {
             try {
                 rs.close();
                 ps.close();
+                con.close();
             } 
             catch (Exception e)
             {

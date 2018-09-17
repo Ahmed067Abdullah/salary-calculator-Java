@@ -32,6 +32,7 @@ public class Teacher {
             try {
                 rs.close();
                 ps.close();
+                con.close();
             } 
             catch (Exception e)
             {

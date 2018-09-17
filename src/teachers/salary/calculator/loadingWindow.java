@@ -1,6 +1,5 @@
 package teachers.salary.calculator;
 
-import java.sql.Connection;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 

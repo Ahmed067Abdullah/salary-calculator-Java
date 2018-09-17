@@ -10,7 +10,6 @@ class DBConnection {
     {
         try{
            Class.forName("org.sqlite.JDBC");
-//           C:\\Users\\Microsoft\\Documents\\NetBeansProjects\\Teachers Salary Calculator\\
            Connection conn = DriverManager.getConnection("jdbc:sqlite:TeachersSalaryCalculator.sqlite");
            return conn;
         }
