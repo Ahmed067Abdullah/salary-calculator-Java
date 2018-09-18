@@ -172,17 +172,23 @@ public class addTeacher extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // Fetching input values
         String name = jTextField3.getText().trim().toLowerCase();
         int course = jComboBox1.getSelectedIndex();
         String pay = jTextField4.getText().trim();
+        
+        // Checking for empty fields
         if(name.equals("") || pay.equals("")){
             JOptionPane.showMessageDialog(null, "Some details are missing");            
         }
+
+        // Checking for types other than integer
         else if(!isNumeric(pay) || isNumeric(name)){
             JOptionPane.showMessageDialog(null, "Invalid input");             
         }
         else{
          try{
+            // Checking for duplicate teacher name
             con = DBConnection.connect();
             boolean flag = true;
             sql = "Select id from teachers where t_name = ?";
@@ -194,6 +200,7 @@ public class addTeacher extends javax.swing.JFrame {
                 break;
             }
             if(flag){   
+                // If no duplicate found then insert
                 sql = "INSERT INTO teachers (t_name,t_course,t_breakup) VALUES(?, ? , ?);";
                 ps = con.prepareStatement(sql); 
                 ps.setString(1, name);

@@ -112,12 +112,15 @@ public class deleteRecord extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         String s = textField2.getText().trim();
+        // Checking for empty field
         if(s.equals("")){
             JOptionPane.showMessageDialog(null, "Enter slip number first");
         }
         else{ 
             try{
                 boolean flag = false;
+                
+                // Checking if this slip no exists or not
                 con = DBConnection.connect();
                 sql = "Select id from studentfees where slip_no = ?";
                 ps = con.prepareStatement(sql);
@@ -128,6 +131,7 @@ public class deleteRecord extends javax.swing.JFrame {
                     break;
                 }
                 if(flag){
+                    // If exists then delete
                     sql = "DELETE from studentfees where slip_no = ?";
                     ps = con.prepareStatement(sql);
                     ps.setString(1,s);             

@@ -320,6 +320,8 @@ public class searchSlip extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         String id = textField2.getText().trim();
         String slipNo = textField3.getText().trim();
+        
+        // Checking for empty fields
         if(id.equals("") && slipNo.equals("")){
             clearFields();
             JOptionPane.showMessageDialog(null, "Enter either ID or Slip no");            
@@ -327,6 +329,8 @@ public class searchSlip extends javax.swing.JFrame {
         else{
             con = DBConnection.connect();
             int flag = 0;
+            
+            // Search by id if available
             if(!id.equals("")){   
                 sql = "Select * from studentfees where id = ?";
                 try{
@@ -342,6 +346,8 @@ public class searchSlip extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
+            
+            // Search by slipno only if id not available
             else{                 
                 sql = "Select * from studentfees where slip_no  = ?";
                 try{
@@ -370,6 +376,7 @@ public class searchSlip extends javax.swing.JFrame {
                     throw new resultNotFoundException("Invalid ID or Slip no, Record not found");
                 }
                 
+                // Fetching deatils from resultSet
                 int secId = rs.getInt("sectionId");
                 int monthId = rs.getInt("month");
                 int fieldId = rs.getInt("field");
@@ -378,6 +385,8 @@ public class searchSlip extends javax.swing.JFrame {
                 
                 String adFee = "0";
                 String noteFee = "0";
+                
+                // Search in admission fee for that slip no, if found then override then current value of 0
                 sql = "Select * from admission_fees where slip_no  = ?";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, slipNo);
@@ -385,7 +394,7 @@ public class searchSlip extends javax.swing.JFrame {
                 while(rs.next()){     
                     adFee = rs.getString("fees");
                 }
-
+                // Search in notes fee for that slip no, if found then override then current value of 0
                 sql = "Select * from notes_fees where slip_no  = ?";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, slipNo);
@@ -403,6 +412,7 @@ public class searchSlip extends javax.swing.JFrame {
                 
                 Number n = new Number();
                 
+                // Populating input fields with fetched data
                 textField2.setText(id);
                 textField3.setText(slipNo);
                 textField4.setText(name);

@@ -213,10 +213,9 @@ public class teacherSalary extends javax.swing.JFrame {
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -253,12 +252,15 @@ public class teacherSalary extends javax.swing.JFrame {
         int month = jComboBox5.getSelectedIndex();
         String id = jTextField3.getText().trim();
         String name = jTextField4.getText().trim().toLowerCase();
+        
+        // Checking for empty fields
         if(id.equals("") && name.equals("")){
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");            
         }
         else{
             con = DBConnection.connect();
             int flag = 0;
+            // Search by id if available
             if(!id.equals("")){   
                 sql = "Select * from teachers where id = ?";
                 try{
@@ -274,6 +276,7 @@ public class teacherSalary extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
+            // Search by name if id not available
             else{                 
                 sql = "Select * from teachers where t_name = ?";
                 try{
@@ -303,6 +306,13 @@ public class teacherSalary extends javax.swing.JFrame {
                 t_breakup = rs.getInt("t_breakup");
                 
                 //Finding Course
+                // Conflict is to find which coloumn to search in the sections table
+                // Column t1 & Course  0 => Chemistry 
+                //        t2 &         1 => Physics
+                //        t3 &         2 => Maths
+                //        t4 &         3 => Biology
+                
+                // Conflict2 is inserted in the query only for maths and biology where field must also be checked, as all students of a section don't study maths OR bio
                 String course,conflict,conflict2 = "";
                 if(t_course == 0){
                     course = "Chemistry";
@@ -335,7 +345,7 @@ public class teacherSalary extends javax.swing.JFrame {
                 ps.setString(1, id);
                 rs = ps.executeQuery();
                 while(rs.next()){
-                    // Finding Students
+                    // Finding Students, 'fees > 0' is there only to avoid rows which are added due to admission fees Or notes fees
                     sql = "SELECT count(*) AS 'count' from studentfees where sectionId = ? and month = ? and fees > 0" + conflict2;
                     ps = con.prepareStatement(sql);
                     ps.setString(1, rs.getString("id"));

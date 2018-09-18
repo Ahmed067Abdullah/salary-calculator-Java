@@ -14,6 +14,8 @@ public class addFeesData extends javax.swing.JFrame {
     public addFeesData() {
         super("New Reciept");
         initComponents();
+        
+        //Setting default values
         textField3.setText("4300");
         textField4.setText("0");
         textField5.setText("0");
@@ -357,6 +359,7 @@ public class addFeesData extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // Fetching values from input fields
         String slip_no = textField2.getText().trim();
         String student_name = textField1.getText().trim();
         String monFee = textField3.getText().trim();
@@ -364,7 +367,8 @@ public class addFeesData extends javax.swing.JFrame {
         String noteFee = textField5.getText().trim();
         
         int slip_noI,monFeeI,adFeeI,noteFeeI;
- 
+        
+        // Checking for empty fields
         if(
             slip_no.equals("") || 
             student_name.equals("") || 
@@ -376,6 +380,8 @@ public class addFeesData extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, "Enter All Details!");
         }
+        
+        //Checking if all fees are zero
         else if(
             monFee.equals("0") && 
             adFee.equals("0") && 
@@ -383,6 +389,8 @@ public class addFeesData extends javax.swing.JFrame {
         ){
           JOptionPane.showMessageDialog(null, "All fees can't be 0");
         }
+        
+        // Validating data type of fees and slip no
         else if(
             !(isNumeric(monFee) && 
               isNumeric(adFee) && 
@@ -392,18 +400,28 @@ public class addFeesData extends javax.swing.JFrame {
         ){
           JOptionPane.showMessageDialog(null, "Invalid inputs");            
         }
+        
+        // Checking if no sections are made yet
+        else if(jComboBox6.getItemCount() == 0){
+            JOptionPane.showMessageDialog(null, "No section available");                  
+        }
+
         else
         {
+            // Converting fees and slip no into integers to check for negative values and further use 
             slip_noI = Integer.parseInt(slip_no);
             monFeeI = Integer.parseInt(monFee);
             adFeeI = Integer.parseInt(adFee);
             noteFeeI = Integer.parseInt(noteFee);
+            
+            // Show error if any value is negative
             if(slip_noI < 0 || monFeeI < 0 || adFeeI < 0 || noteFeeI < 0){
                 JOptionPane.showMessageDialog(null, "Negative values are not allowed");         
             }else{
                 try
                 {
                     con = DBConnection.connect();
+                    
                     // Checking for duplicate slip no
                     boolean flag = false;
                     sql = "SELECT id from studentfees where slip_no = ?";
@@ -416,6 +434,7 @@ public class addFeesData extends javax.swing.JFrame {
                     if(flag)
                         JOptionPane.showMessageDialog(null, "Slip number already exists!");
                     else{
+                        // Fetching field's value
                         Integer field;
                         if(jRadioButton1.isSelected())
                             field = 0;
@@ -438,11 +457,14 @@ public class addFeesData extends javax.swing.JFrame {
                         ps.execute();
                     
                         int generatedId = -1;
+                        
+                        // Fetching id of last inserted record
                         rs = ps.getGeneratedKeys();
                         while(rs.next()){
                             generatedId = rs.getInt(1);
                         }                   
-                                        
+                        
+                        // Only insert in admission fees table if fees is not zero or less
                         if(adFeeI > 0){
                             sql = "Insert into admission_fees (slip_no, fees) values(?,?);";
                             ps = con.prepareStatement(sql);
@@ -450,7 +472,7 @@ public class addFeesData extends javax.swing.JFrame {
                             ps.setInt(2, adFeeI);
                             ps.execute();                        
                         }
-                    
+                        // Only insert in notes fees table if fees is not zero or less                    
                         if(noteFeeI > 0){
                             sql = "Insert into notes_fees (slip_no, fees) values(?,?);";
                             ps = con.prepareStatement(sql);
@@ -460,6 +482,7 @@ public class addFeesData extends javax.swing.JFrame {
                         }
                         JOptionPane.showMessageDialog(null, "Record Entered Successfully!! \nID = "+Integer.toString(generatedId));                         
                         
+                        // Setting up input field for the next record
                         textField6.setText(Integer.toString(slip_noI));                            
                         slip_noI++;
                         textField1.setText("");

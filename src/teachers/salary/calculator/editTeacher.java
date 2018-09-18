@@ -3,7 +3,6 @@ package teachers.salary.calculator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class editTeacher extends javax.swing.JFrame {
@@ -141,7 +140,7 @@ public class editTeacher extends javax.swing.JFrame {
                                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(45, 45, 45)
                                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 11, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel13)))
@@ -203,12 +202,16 @@ public class editTeacher extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         String id = jTextField5.getText().trim();
         String name = jTextField3.getText().trim().toLowerCase();
+        
+        // Checking for empty fields
         if(id.equals("") && name.equals("")){
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");            
         }
         else{
             con = DBConnection.connect();
             int flag = 0;
+            
+            // Search by id if available
             if(!id.equals("")){   
                 sql = "Select * from teachers where id = ?";
                 try{
@@ -224,6 +227,8 @@ public class editTeacher extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
+            
+            // Search by name if id is not there 
             else{                 
                 sql = "Select * from teachers where t_name = ?";
                 try{
@@ -241,6 +246,8 @@ public class editTeacher extends javax.swing.JFrame {
             }
             try{
                 int t_breakup,t_course;
+                
+                // Setting id and name w.r.t to previous if-else
                 if(flag == 1){
                     name = rs.getString("t_name");
                 }
@@ -297,40 +304,46 @@ public class editTeacher extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // Checking for empty fields
         if(idForUpdation < 1 || jTextField6.getText().trim().equals("")){
             JOptionPane.showMessageDialog(null, "Incomplete Details");              
-        }else if(!isNumeric(jTextField6.getText().trim())){
+        }
+        // Checking for invalid data types
+        else if(!isNumeric(jTextField6.getText().trim())){
             JOptionPane.showMessageDialog(null, "Invalid input");             
         }else{
-            int t_breakup = Integer.parseInt(jTextField6.getText().trim());
-            try{
-                con = DBConnection.connect();   
-                sql = "update teachers set t_breakup = ? where id = ?";
-                ps = con.prepareStatement(sql); 
-                ps.setInt(1, t_breakup); 
-                ps.setInt(2, idForUpdation);
-                ps.execute();
+            // Only continue if press yes
+            if(JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+                int t_breakup = Integer.parseInt(jTextField6.getText().trim());
+                try{
+                    con = DBConnection.connect();   
+                    sql = "update teachers set t_breakup = ? where id = ?";
+                    ps = con.prepareStatement(sql); 
+                    ps.setInt(1, t_breakup); 
+                    ps.setInt(2, idForUpdation);
+                    ps.execute();
                 
-                JOptionPane.showMessageDialog(null, "Record Updated Successfully");
-                setVisible(false);
-                teacherMenu m = new teacherMenu();
-                m.setVisible(true);
+                    JOptionPane.showMessageDialog(null, "Record Updated Successfully");
+                    setVisible(false);
+                    teacherMenu m = new teacherMenu();
+                    m.setVisible(true);
                 
+                }
+                catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                }      
+                finally{
+                    try {
+                        rs.close();
+                        ps.close();
+                        con.close();
+                    } 
+                    catch (Exception e){
+                        JOptionPane.showMessageDialog(null, e);  
+                    } 
+                }
             }
-            catch(Exception e){
-                JOptionPane.showMessageDialog(null, e);
-            }      
-            finally{
-                try {
-                    rs.close();
-                    ps.close();
-                    con.close();
-                } 
-                catch (Exception e){
-                    JOptionPane.showMessageDialog(null, e);  
-                } 
-            }
-        }    
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked

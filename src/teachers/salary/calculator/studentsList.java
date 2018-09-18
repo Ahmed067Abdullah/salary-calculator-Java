@@ -17,6 +17,8 @@ public class studentsList extends javax.swing.JFrame {
         super("Students List");
         initComponents();
         con = DBConnection.connect();
+        
+        // Populating sections combo box
         sql = "Select sectionName from sections";
         try
         {
@@ -265,20 +267,26 @@ public class studentsList extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         String id = jTextField4.getText().trim();
         String name = jTextField3.getText().trim().toLowerCase();
-        String conflict1;
-        int month = jComboBox5.getSelectedIndex();
-        if(month == 12){
-            conflict1 = "";
-        }
-        else{
-            conflict1 = " and month = "+month;          
-        }
+        
+        // Checking for empty fields
         if(id.equals("") && name.equals("")){
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");
         }
         else{
+            // Conflict1 for months, if All is selected from dropdown then value of month is 12, so search irrespective of months, else search for that particular month
+            String conflict1;
+            int month = jComboBox5.getSelectedIndex();
+            if(month == 12){
+                conflict1 = "";
+            }
+            else{
+                conflict1 = " and month = "+month;          
+            }
+            
             con = DBConnection.connect();
             int flag = 0;
+            
+            // Search by id if avaialable
             if(!id.equals("")){
                 sql = "Select t_name,t_course from teachers where id = ?";
                 try{
@@ -294,6 +302,7 @@ public class studentsList extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
+            // Search name if id is not avaialable
             else{
                 sql = "Select id,t_course from teachers where t_name = ?";
                 try{
@@ -319,7 +328,12 @@ public class studentsList extends javax.swing.JFrame {
                     throw new resultNotFoundException("Invalid ID or Name, Teacher not found");
                 }
                 int t_course = rs.getInt("t_course");
-                //Finding which coloumn to search
+                
+                //Finding which coloumn to search in sections table
+                // Column t1 => Chemistry
+                //        t2 => Physics
+                //        t3 => Maths
+                //        t4 => Biology
                 String conflict2,conflict3 = "";
                 if(t_course == 0){
                     conflict2 = "t1";
@@ -340,8 +354,11 @@ public class studentsList extends javax.swing.JFrame {
                 }
                 
                 Section s = new Section();
+                // Calling getSectionId() to get secId of selected section
                 int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
-                String sql = "Select  sectionName from sections where id = ? and " + conflict2 + " = ?";
+                
+                // getting section name of the selected section, teacher is also added in the query to check whether that teacher teaches in that section or not 
+                String sql = "Select sectionName from sections where id = ? and " + conflict2 + " = ?";
                 ps = con.prepareStatement(sql);
                 ps.setInt(1,secId);
                 ps.setString(2, id);
@@ -351,6 +368,7 @@ public class studentsList extends javax.swing.JFrame {
                 while(rs.next()){
                     flag2 = true;
                 }
+                // If teacher teaches in that section then populate the table
                 if(flag2){
                     Teacher t = new Teacher();
                     jTextField4.setText(id);

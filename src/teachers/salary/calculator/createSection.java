@@ -14,6 +14,13 @@ public class createSection extends javax.swing.JFrame {
     public createSection() {
         super("Create Section");
         initComponents();
+        
+        // Fetching all techers from DB and pushing them in their respective course's combobox
+        // Course 0 => Chemistry
+        //        1 => Physics
+        //        2 => Maths
+        //        3 => Biology
+        
         con = DBConnection.connect();
         sql = "Select t_name, t_course from teachers";
         String course,name;
@@ -266,11 +273,24 @@ public class createSection extends javax.swing.JFrame {
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         String secName = textField2.getText().trim();
         boolean flag = false; 
+        
+        // Checking for empty field
         if(secName.equals("")){
            JOptionPane.showMessageDialog(null, "Section name is required"); 
         }
+        
+        // Checking for empty comboboxes
+        else if(
+           jComboBox1.getItemCount() == 0 ||
+           jComboBox2.getItemCount() == 0 ||
+           jComboBox3.getItemCount() == 0 ||
+           jComboBox4.getItemCount() == 0                
+        ){
+           JOptionPane.showMessageDialog(null, "All four course teachers are required to create a section");             
+        }
         else{
             try{
+                // Checking for duplicate section name
                 Teacher t = new Teacher();
                 sql = "SELECT id from sections where sectionName = ?";
                 con = DBConnection.connect();
@@ -284,6 +304,7 @@ public class createSection extends javax.swing.JFrame {
                 if(flag)
                    JOptionPane.showMessageDialog(null, "Section already exists");       
                 else{
+                   // If no duplicate then insert
                    sql = "INSERT into sections (sectionName,t1,t2,t3,t4) VALUES (?,?,?,?,?)";
                    ps = con.prepareStatement(sql);
                    ps.setString(1,secName);

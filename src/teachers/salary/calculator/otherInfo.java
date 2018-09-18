@@ -17,6 +17,7 @@ public class otherInfo extends javax.swing.JFrame {
     }
     
     public void getInfo(int month){
+        // Conflict1, Conflict2 for months, if All is selected from dropdown then value of month is 12, so search irrespective of months, else search for that particular month       
         String conflict1,conflict2;
         if(month == 12){
             conflict1 = "";
@@ -26,61 +27,70 @@ public class otherInfo extends javax.swing.JFrame {
             conflict1 = " and month = "+month;
             conflict2 = " where month = "+month;            
         }
-//        int engStd, medStd;
+        // int engStd, medStd;
         int engCash, medCash,engNotes,medNotes,engAd,medAd,strtSlip,endSlip,totalSlips;
         
         con = DBConnection.connect();
         try{
-            sql = "SELECT count(*) as 'engStd', sum(fees) as 'engCash'  from studentfees where field = 0" + conflict1;
+            // Finding sum of engineering fees so field = 0
+            // count(*) as 'engStd',
+            sql = "SELECT  sum(fees) as 'engCash'  from studentfees where field = 0" + conflict1;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 //            engStd = rs.getInt("engStd");
             engCash = rs.getInt("engCash");
-            
-            sql = "SELECT count(*) as 'medStd', sum(fees) as 'medCash' from studentfees where field = 1" + conflict1;
+
+            // Finding sum of medical fees so field = 1
+            // count(*) as 'medStd',            
+            sql = "SELECT  sum(fees) as 'medCash' from studentfees where field = 1" + conflict1;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 //            medStd = rs.getInt("medStd");
             medCash = rs.getInt("medCash");
             
+            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 0 for engg students
             sql = "SELECT sum(notes_fees.fees) as 'engNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 0" + conflict1;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             engNotes = rs.getInt("engNotes");
             
-
+            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 1 for medical students
             sql = "SELECT sum(notes_fees.fees) as 'medNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 1 " + conflict1;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             medNotes = rs.getInt("medNotes");
 
+            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 0 for engg students            
             sql = "SELECT sum(admission_fees.fees) as 'engAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 0" + conflict1;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             engAd = rs.getInt("engAd");
             
-
+            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 1 for medical students 
             sql = "SELECT sum(admission_fees.fees) as 'medAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 1 " + conflict1;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             medAd = rs.getInt("medAd");
 
-
+            // Fetching slip no of first slip
             sql = "SELECT slip_no from studentfees " + conflict2 + " order by id limit 1";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             strtSlip = rs.getInt("slip_no");
-            
+
+            // Fetching slip no of last slip            
             sql = "SELECT slip_no from studentfees " + conflict2 + " order by id desc limit 1";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             endSlip = rs.getInt("slip_no");
             
+            // Calculating total number of slips
             sql = "SELECT count(*) as 'total_slips' from studentfees " + conflict2;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             totalSlips = rs.getInt("total_slips");
   
+            // Populating fields with fetched data
             Number n = new Number();        
             textField13.setText(Integer.toString(strtSlip));
             textField14.setText(Integer.toString(endSlip));

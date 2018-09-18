@@ -15,6 +15,8 @@ public class editSection extends javax.swing.JFrame {
     public editSection() {
         super("Edit Section");
         initComponents();
+        
+        // Populating combobox with current section names
         con = DBConnection.connect();
         sql = "Select sectionName,id from sections";
         try{
@@ -285,6 +287,7 @@ public class editSection extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // Remove All teachers, empty comboboxes
         jComboBox1.removeAllItems();
         jComboBox2.removeAllItems();
         jComboBox3.removeAllItems();
@@ -294,6 +297,8 @@ public class editSection extends javax.swing.JFrame {
             Teacher t = new Teacher();
             con = DBConnection.connect();
             String []teachers = new String[4];
+            
+            // get teachers ids of the selected section and store them in the array
             sql = "SELECT id,t1,t2,t3,t4 from sections where sectionName = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, secName);
@@ -306,6 +311,11 @@ public class editSection extends javax.swing.JFrame {
                 idOfSection = rs.getInt("id");
             }
             
+            // Fetching all techers from DB and pushing them in their respective course's combobox
+            // Course 0 => Chemistry
+            //        1 => Physics
+            //        2 => Maths
+            //        3 => Biology
             sql = "Select t_name, t_course from teachers";
             String course,name;
         
@@ -332,8 +342,8 @@ public class editSection extends javax.swing.JFrame {
                     System.out.println("Error");                   
                 }
             }    
-
-//            System.out.println();
+            
+            // Selecting the teachers of the selected sections to show by default
             jComboBox1.setSelectedItem((Object)t.capitalizeTeacherName(teachers[0]));
             jComboBox3.setSelectedItem((Object)t.capitalizeTeacherName(teachers[1]));
             jComboBox4.setSelectedItem((Object)t.capitalizeTeacherName(teachers[2]));
