@@ -18,74 +18,63 @@ public class otherInfo extends javax.swing.JFrame {
     
     public void getInfo(int month){
         // Conflict1, Conflict2 for months, if All is selected from dropdown then value of month is 12, so search irrespective of months, else search for that particular month       
-        String conflict1,conflict2;
-        if(month == 12){
-            conflict1 = "";
-            conflict2 = "";
-        }
-        else{
-            conflict1 = " and month = "+month;
-            conflict2 = " where month = "+month;            
-        }
-        // int engStd, medStd;
-        int engCash, medCash,engNotes,medNotes,engAd,medAd,strtSlip,endSlip,totalSlips;
+        String conflict;
+        if(month == 12)
+            conflict = "";
+        else
+            conflict = " where month = "+month;            
+        
+        int engCash  =0, medCash = 0,engNotes = 0,medNotes = 0,engAd = 0,medAd = 0,strtSlip,endSlip,totalSlips;
         
         con = DBConnection.connect();
         try{
-            // Finding sum of engineering fees so field = 0
-            // count(*) as 'engStd',
-            sql = "SELECT  sum(fees) as 'engCash'  from studentfees where field = 0" + conflict1;
+            // Finding sum of fees field = 1 for medical and 0 for engg;      
+            sql = "SELECT  field, sum(fees) as 'monthlyFees' from studentfees " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-//            engStd = rs.getInt("engStd");
-            engCash = rs.getInt("engCash");
+            while(rs.next()){
+                if(rs.getInt("field") == 0)
+                    engCash = rs.getInt("monthlyFees"); 
+                else if(rs.getInt("field") == 1)
+                    medCash = rs.getInt("monthlyFees"); 
+            }
+            
+            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 1 for medical and 0 for engineering
+            sql = "SELECT field, sum(notes_fees.fees) as 'notesFees' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no "+ conflict +" group by field";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                if(rs.getInt("field") == 0)
+                    engNotes = rs.getInt("notesFees"); 
+                else if(rs.getInt("field") == 1)
+                    medNotes = rs.getInt("notesFees"); 
+            }
 
-            // Finding sum of medical fees so field = 1
-            // count(*) as 'medStd',            
-            sql = "SELECT  sum(fees) as 'medCash' from studentfees where field = 1" + conflict1;
+            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 1 for medical, 0 for engg
+            sql = "SELECT field,sum(admission_fees.fees) as 'adFees' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-//            medStd = rs.getInt("medStd");
-            medCash = rs.getInt("medCash");
-            
-            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 0 for engg students
-            sql = "SELECT sum(notes_fees.fees) as 'engNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 0" + conflict1;
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            engNotes = rs.getInt("engNotes");
-            
-            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 1 for medical students
-            sql = "SELECT sum(notes_fees.fees) as 'medNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 1 " + conflict1;
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            medNotes = rs.getInt("medNotes");
-
-            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 0 for engg students            
-            sql = "SELECT sum(admission_fees.fees) as 'engAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 0" + conflict1;
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            engAd = rs.getInt("engAd");
-            
-            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 1 for medical students 
-            sql = "SELECT sum(admission_fees.fees) as 'medAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 1 " + conflict1;
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            medAd = rs.getInt("medAd");
+            while(rs.next()){
+                if(rs.getInt("field") == 0)
+                    engAd = rs.getInt("adFees"); 
+                else if(rs.getInt("field") == 1)
+                    medAd = rs.getInt("adFees");
+            }
 
             // Fetching slip no of first slip
-            sql = "SELECT slip_no from studentfees " + conflict2 + " order by id limit 1";
+            sql = "SELECT slip_no from studentfees " + conflict + " order by id limit 1";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             strtSlip = rs.getInt("slip_no");
 
             // Fetching slip no of last slip            
-            sql = "SELECT slip_no from studentfees " + conflict2 + " order by id desc limit 1";
+            sql = "SELECT slip_no from studentfees " + conflict + " order by id desc limit 1";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             endSlip = rs.getInt("slip_no");
             
             // Calculating total number of slips
-            sql = "SELECT count(*) as 'total_slips' from studentfees " + conflict2;
+            sql = "SELECT count(*) as 'total_slips' from studentfees " + conflict;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             totalSlips = rs.getInt("total_slips");
@@ -94,12 +83,7 @@ public class otherInfo extends javax.swing.JFrame {
             Number n = new Number();        
             textField13.setText(Integer.toString(strtSlip));
             textField14.setText(Integer.toString(endSlip));
-            textField17.setText(n.withCommas(totalSlips));
-     
-//            textField4.setText(Integer.toString(engStd));
-//            textField5.setText(Integer.toString(medStd));
-//            textField6.setText(Integer.toString(medStd + engStd));
-            
+            textField17.setText(n.withCommas(totalSlips));        
             textField19.setText(n.withCommas(engNotes));
             textField16.setText(n.withCommas(medNotes));
             textField18.setText(n.withCommas(engAd));
@@ -119,10 +103,47 @@ public class otherInfo extends javax.swing.JFrame {
             }
             catch(Exception e){
                 JOptionPane.showMessageDialog(null, e);
+            }
         }
-        }
-
     }
+    
+//            Abondanded Code
+
+//            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 0 for engg students            
+//            sql = "SELECT sum(admission_fees.fees) as 'engAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 0" + conflict1;
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            engAd = rs.getInt("engAd");
+//            
+//            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 1 for medical students 
+//            sql = "SELECT sum(admission_fees.fees) as 'medAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 1 " + conflict1;
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            medAd = rs.getInt("medAd");    
+    
+//            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 0 for engg students
+//            sql = "SELECT sum(notes_fees.fees) as 'engNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 0" + conflict1;
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            engNotes = rs.getInt("engNotes");
+//            
+//            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 1 for medical students
+//            sql = "SELECT sum(notes_fees.fees) as 'medNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 1 " + conflict1;
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            medNotes = rs.getInt("medNotes");
+    
+//            // Finding sum of engineering fees so field = 0
+//            sql = "SELECT  sum(fees) as 'engCash'  from studentfees where field = 0" + conflict1;
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            engCash = rs.getInt("engCash");
+//
+//            // Finding sum of medical fees so field = 1      
+//            sql = "SELECT  sum(fees) as 'medCash' from studentfees where field = 1" + conflict1;
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            medCash = rs.getInt("medCash");
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

@@ -100,6 +100,7 @@ public class deletePassword extends javax.swing.JFrame {
         }
         else{
             JOptionPane.showMessageDialog(null, "Wrong Password!");
+            jPasswordField1.setText("");
         }
 
     }//GEN-LAST:event_jButton7ActionPerformed

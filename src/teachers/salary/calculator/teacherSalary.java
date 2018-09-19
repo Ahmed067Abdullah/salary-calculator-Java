@@ -300,6 +300,10 @@ public class teacherSalary extends javax.swing.JFrame {
                 else if(flag == 2){
                     id = rs.getString("id");
                 }else{
+                    jTextField2.setText("");
+                    jTextField5.setText("");
+                    jTextField1.setText("");
+                    jTextField6.setText("");
                     throw new resultNotFoundException("Invalid ID or Name, Teacher not found");
                 }
                 t_course = rs.getInt("t_course");

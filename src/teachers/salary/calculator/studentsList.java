@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 public class studentsList extends javax.swing.JFrame {
@@ -27,6 +28,7 @@ public class studentsList extends javax.swing.JFrame {
             while(rs.next()){
                 jComboBox6.addItem(rs.getString("sectionName"));
             }
+            jComboBox6.addItem("All");
         }
         catch(Exception e)
         {
@@ -46,6 +48,17 @@ public class studentsList extends javax.swing.JFrame {
             } 
         }
     }
+        public void clearField(boolean flag){
+            jTextField5.setText("");
+            jTextField6.setText("");
+            jTextField7.setText("");
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);          
+            if(flag){
+                jTextField3.setText("");
+                jTextField4.setText("");                
+            }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,6 +85,12 @@ public class studentsList extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jComboBox6 = new javax.swing.JComboBox<>();
         jLabel20 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,59 +191,113 @@ public class studentsList extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel6.setText("Total Students");
+
+        jTextField5.setEditable(false);
+        jTextField5.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel7.setText("Pay Per Student");
+
+        jTextField6.setEditable(false);
+        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+
+        jTextField7.setEditable(false);
+        jTextField7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel8.setText("Total ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(jLabel1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel14)
-                        .addGap(31, 31, 31)
-                        .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel13)
-                        .addGap(18, 18, 18)))
-                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(392, 392, 392))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(302, 302, 302)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(319, 319, 319)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel20)
+                        .addComponent(jButton9)
+                        .addGap(243, 243, 243))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap(60, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(15, 15, 15))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(41, 41, 41)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(54, 54, 54)
+                                                .addComponent(jLabel7)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel5)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel4))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(39, 39, 39)
+                                                .addComponent(jLabel8)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jTextField7)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(328, 328, 328)))
+                        .addComponent(jLabel20))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
@@ -232,18 +305,26 @@ public class studentsList extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel13)
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jButton9)
+                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton9))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jLabel2)
@@ -252,7 +333,7 @@ public class studentsList extends javax.swing.JFrame {
                 .addGap(11, 11, 11))
         );
 
-        setSize(new java.awt.Dimension(918, 747));
+        setSize(new java.awt.Dimension(918, 847));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -271,30 +352,30 @@ public class studentsList extends javax.swing.JFrame {
         // Checking for empty fields
         if(id.equals("") && name.equals("")){
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");
+            clearField(false);
         }
         else{
-            // Conflict1 for months, if All is selected from dropdown then value of month is 12, so search irrespective of months, else search for that particular month
-            String conflict1;
+            String monthConflict;
             int month = jComboBox5.getSelectedIndex();
             if(month == 12){
-                conflict1 = "";
+                monthConflict = "";
             }
             else{
-                conflict1 = " and month = "+month;          
+                monthConflict = " and month = "+month;          
             }
             
             con = DBConnection.connect();
-            int flag = 0;
+            int validDataFlag = 0;
             
             // Search by id if avaialable
             if(!id.equals("")){
-                sql = "Select t_name,t_course from teachers where id = ?";
+                sql = "Select t_name,t_course,t_breakup from teachers where id = ?";
                 try{
                     ps = con.prepareStatement(sql);
                     ps.setString(1, id);
                     rs = ps.executeQuery();
                     while(rs.next()){
-                        flag = 1;
+                        validDataFlag = 1;
                         break;
                     }
                 }
@@ -304,13 +385,13 @@ public class studentsList extends javax.swing.JFrame {
             }
             // Search name if id is not avaialable
             else{
-                sql = "Select id,t_course from teachers where t_name = ?";
+                sql = "Select id,t_course,t_breakup from teachers where t_name = ?";
                 try{
                     ps = con.prepareStatement(sql);
                     ps.setString(1, name);
                     rs = ps.executeQuery();
                     while(rs.next()){
-                        flag = 2;
+                        validDataFlag = 2;
                         break;
                     }
                 }
@@ -319,69 +400,97 @@ public class studentsList extends javax.swing.JFrame {
                 }
             }
             try{
-                if(flag == 1){
+                if(validDataFlag == 1){
                     name = rs.getString("t_name");
                 }
-                else if(flag == 2){
+                else if(validDataFlag == 2){
                     id = rs.getString("id");
                 }else{
+                    clearField(true);
                     throw new resultNotFoundException("Invalid ID or Name, Teacher not found");
                 }
                 int t_course = rs.getInt("t_course");
+                int t_breakup = rs.getInt("t_breakup");                
                 
                 //Finding which coloumn to search in sections table
                 // Column t1 => Chemistry
                 //        t2 => Physics
                 //        t3 => Maths
                 //        t4 => Biology
-                String conflict2,conflict3 = "";
+                String teacherColumnConflict,fieldConflict = "",sectionIdConflictForSearchingTeachers,sectionIdsListConflict = "";
                 if(t_course == 0){
-                    conflict2 = "t1";
+                    teacherColumnConflict = "t1";
                 }
                 else if(t_course == 1){
-                    conflict2 = "t2";
+                    teacherColumnConflict = "t2";
                 }
                 else if(t_course == 2){
-                    conflict2 = "t3";
-                    conflict3 = " and field = 0";
+                    teacherColumnConflict = "t3";
+                    fieldConflict = " and field = 0";
                 }
                 else if(t_course == 3){  
-                    conflict2 = "t4";
-                    conflict3 = " and field = 1";
+                    teacherColumnConflict = "t4";
+                    fieldConflict = " and field = 1";
                 }  
                 else{
-                    conflict2 = "Something Wrong";
+                    teacherColumnConflict = "Something Wrong";
                 }
                 
                 Section s = new Section();
+                boolean flag3 = false;
+                
                 // Calling getSectionId() to get secId of selected section
-                int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
+                int secId = s.getSectionId((String) jComboBox6.getSelectedItem());                
+                
+                if(jComboBox6.getSelectedIndex() == jComboBox6.getItemCount() - 1){
+                    flag3 = true;
+                    sectionIdConflictForSearchingTeachers = "";
+                    // conflict5 set in next while loop
+                }
+                else{
+                    sectionIdConflictForSearchingTeachers = " id = "+secId + " and ";     
+                    sectionIdsListConflict = "sectionId = "+secId +" and";
+                }
                 
                 // getting section name of the selected section, teacher is also added in the query to check whether that teacher teaches in that section or not 
-                String sql = "Select sectionName from sections where id = ? and " + conflict2 + " = ?";
+                sql = "Select id from sections where " + sectionIdConflictForSearchingTeachers + teacherColumnConflict + " = ?";
                 ps = con.prepareStatement(sql);
-                ps.setInt(1,secId);
-                ps.setString(2, id);
+                ps.setString(1, id);
                 rs = ps.executeQuery();
                 
                 boolean flag2 = false;
                 while(rs.next()){
                     flag2 = true;
+                    if(flag3){
+                        sectionIdsListConflict += " sectionId = "+ rs.getInt("id") +" or ";
+                    }
                 }
+                // Removing the last OR from the variable by using substring func and adding barckets in start and end
+                sectionIdsListConflict = "( " + sectionIdsListConflict.substring(0, sectionIdsListConflict.length() - 3) + ") and "; 
                 // If teacher teaches in that section then populate the table
                 if(flag2){
                     Teacher t = new Teacher();
                     jTextField4.setText(id);
                     jTextField3.setText(t.capitalizeTeacherName(name));                
                 
-                    sql = "Select id as 'ID',std_name as 'Student Name',slip_no as 'Slip Number',fees as 'Fees',field as 'Field' from studentfees where sectionId = ? and fees > 0 " + conflict1 + conflict3;
+                    sql = "Select id as 'ID',std_name as 'Student Name',slip_no as 'Slip Number',fees as 'Fees',field as 'Field' from studentfees where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
                     ps = con.prepareStatement(sql);
-                    ps.setInt(1,secId);
                     rs = ps.executeQuery();
                     jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+                    
+                    sql = "SELECT count(id) as 'tot_stds' from studentfees where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
+                    ps = con.prepareStatement(sql);
+                    rs = ps.executeQuery();
+                    
+                    Number n = new Number();
+                    String noOfStds = rs.getString("tot_stds");
+                    jTextField5.setText(noOfStds);
+                    jTextField6.setText(Integer.toString(t_breakup));
+                    jTextField7.setText(n.withCommas(t_breakup * Integer.parseInt(noOfStds)));                    
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "This teacher don't teach in the selected section");                    
+                    JOptionPane.showMessageDialog(null, "This teacher don't teach in the selected section"); 
+                    clearField(false);
                 }
                 
                   
@@ -424,6 +533,18 @@ public class studentsList extends javax.swing.JFrame {
         addFeesData m = new addFeesData();
         m.setVisible(true);
     }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -473,9 +594,15 @@ public class studentsList extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

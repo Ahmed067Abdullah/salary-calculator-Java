@@ -20,6 +20,11 @@ public class editTeacher extends javax.swing.JFrame {
     public boolean isNumeric(String str){
         return str.matches("^\\d+$");  
     }
+    
+    public void clearFields(){
+        jTextField4.setText("");
+        jTextField6.setText("");        
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -205,6 +210,7 @@ public class editTeacher extends javax.swing.JFrame {
         
         // Checking for empty fields
         if(id.equals("") && name.equals("")){
+            clearFields();
             JOptionPane.showMessageDialog(null, "Enter either ID or Name");            
         }
         else{
@@ -254,6 +260,7 @@ public class editTeacher extends javax.swing.JFrame {
                 else if(flag == 2){
                     id = rs.getString("id");
                 }else{
+                    clearFields();
                     throw new resultNotFoundException("Invalid ID or Name, Teacher not found");
                 }
                 t_course = rs.getInt("t_course");
