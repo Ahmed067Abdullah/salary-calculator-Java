@@ -353,7 +353,7 @@ public class teacherSalary extends javax.swing.JFrame {
                 rs = ps.executeQuery();
                 while(rs.next()){
                     // Finding Students, 'fees > 0' is there only to avoid rows which are added due to admission fees Or notes fees
-                    sql = "SELECT count(*) AS 'count' from studentfees where sectionId = ? and month = ? and fees > 0" + conflict2;
+                    sql = "SELECT count(*) AS 'count' from studentfees inner join students on studentfees.std_id = students.id where section = ? and month = ? and fees > 0 " + conflict2;
                     ps = con.prepareStatement(sql);
                     ps.setString(1, rs.getString("id"));
                     ps.setInt(2, month);

@@ -29,7 +29,7 @@ public class otherInfo extends javax.swing.JFrame {
         con = DBConnection.connect();
         try{
             // Finding sum of fees field = 1 for medical and 0 for engg;      
-            sql = "SELECT  field, sum(fees) as 'monthlyFees' from studentfees " + conflict + " group by field";
+            sql = "SELECT  field, sum(fees) as 'monthlyFees' from studentfees inner join students on studentfees.std_id = students.id " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -40,7 +40,7 @@ public class otherInfo extends javax.swing.JFrame {
             }
             
             // Finding sum of fees in notes fees after joining notes table with main fees table, field is 1 for medical and 0 for engineering
-            sql = "SELECT field, sum(notes_fees.fees) as 'notesFees' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no "+ conflict +" group by field";
+            sql = "SELECT field, sum(notes_fees.fees) as 'notesFees' from studentfees inner join students on studentfees.std_id = students.id inner join notes_fees on studentfees.slip_no = notes_fees.slip_no "+ conflict +" group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -51,7 +51,7 @@ public class otherInfo extends javax.swing.JFrame {
             }
 
             // Finding sum of fees in admission fees after joining admission table with main fees table, field is 1 for medical, 0 for engg
-            sql = "SELECT field,sum(admission_fees.fees) as 'adFees' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no " + conflict + " group by field";
+            sql = "SELECT field,sum(admission_fees.fees) as 'adFees' from studentfees inner join students on studentfees.std_id = students.id inner join admission_fees on studentfees.slip_no = admission_fees.slip_no " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){

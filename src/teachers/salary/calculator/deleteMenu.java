@@ -114,7 +114,11 @@ public class deleteMenu extends javax.swing.JFrame {
 
                 sql = "DELETE from sections";
                 ps = con.prepareStatement(sql);  
-                ps.execute();              
+                ps.execute();   
+                
+                sql = "DELETE from students";
+                ps = con.prepareStatement(sql);  
+                ps.execute();   
                 
                 JOptionPane.showMessageDialog(null, "All Records Deleted Successfully!");   
             }

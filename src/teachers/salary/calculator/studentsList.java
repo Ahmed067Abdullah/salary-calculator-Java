@@ -127,7 +127,7 @@ public class studentsList extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Slip no", "Student Name", "Fees", "Field"
+                "Student ID", "Slip no", "Student Name", "Fees", "Field"
             }
         ) {
             Class[] types = new Class [] {
@@ -266,7 +266,7 @@ public class studentsList extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(312, 312, 312)))
+                                .addGap(330, 330, 330)))
                         .addComponent(jLabel20)
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
@@ -315,18 +315,20 @@ public class studentsList extends javax.swing.JFrame {
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addGap(39, 39, 39))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel20))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel5))))
@@ -449,7 +451,7 @@ public class studentsList extends javax.swing.JFrame {
                 }
                 else{
                     sectionIdConflictForSearchingTeachers = " id = "+secId + " and ";     
-                    sectionIdsListConflict = "sectionId = "+secId +" and";
+                    sectionIdsListConflict = "section = "+secId +" and";
                 }
                 
                 // getting section name of the selected section, teacher is also added in the query to check whether that teacher teaches in that section or not 
@@ -462,7 +464,7 @@ public class studentsList extends javax.swing.JFrame {
                 while(rs.next()){
                     flag2 = true;
                     if(flag3){
-                        sectionIdsListConflict += " sectionId = "+ rs.getInt("id") +" or ";
+                        sectionIdsListConflict += " section = "+ rs.getInt("id") +" or ";
                     }
                 }
                 // Removing the last OR from the variable by using substring func and adding barckets in start and end
@@ -473,12 +475,12 @@ public class studentsList extends javax.swing.JFrame {
                     jTextField4.setText(id);
                     jTextField3.setText(t.capitalizeTeacherName(name));                
                 
-                    sql = "Select id as 'ID',std_name as 'Student Name',slip_no as 'Slip Number',fees as 'Fees',field as 'Field' from studentfees where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
+                    sql = "Select students.id as 'Student ID',name as 'Student Name',slip_no as 'Slip Number',fees as 'Fees',field as 'Field' from studentfees inner join students on studentfees.std_id = students.id where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
                     ps = con.prepareStatement(sql);
                     rs = ps.executeQuery();
                     jTable1.setModel(DbUtils.resultSetToTableModel(rs));
                     
-                    sql = "SELECT count(id) as 'tot_stds' from studentfees where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
+                    sql = "SELECT count(*) as 'tot_stds' from studentfees inner join students on studentfees.std_id = students.id where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
                     ps = con.prepareStatement(sql);
                     rs = ps.executeQuery();
                     

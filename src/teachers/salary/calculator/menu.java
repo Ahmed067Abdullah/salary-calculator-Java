@@ -67,7 +67,7 @@ public class menu extends javax.swing.JFrame {
         });
 
         jButton11.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        jButton11.setText("Manipulate Teachers Data");
+        jButton11.setText("Manipulate Records");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
