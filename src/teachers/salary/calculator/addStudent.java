@@ -287,6 +287,7 @@ public class addStudent extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Student added successfully");
                     textField4.setText("");
                     textField5.setText("");
+                    textField4.requestFocus();
                 } else {
                     JOptionPane.showMessageDialog(null, "ID Already in use!");
                 }

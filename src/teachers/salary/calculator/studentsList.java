@@ -405,11 +405,11 @@ public class studentsList extends javax.swing.JFrame {
                 }
                 else if(t_course == 2){
                     teacherColumnConflict = "t3";
-                    fieldConflict = " and field = 0";
+                    fieldConflict = " and students.field = 0";
                 }
                 else if(t_course == 3){  
                     teacherColumnConflict = "t4";
-                    fieldConflict = " and field = 1";
+                    fieldConflict = " and students.field = 1";
                 }  
                 else{
                     teacherColumnConflict = "Something Wrong";
