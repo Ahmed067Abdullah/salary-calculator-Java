@@ -258,7 +258,18 @@ public class editSection extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        try{
+
+        if(
+            jComboBox1.getSelectedIndex() == -1 ||
+            jComboBox2.getSelectedIndex() == -1 ||
+            jComboBox3.getSelectedIndex() == -1 ||
+            jComboBox4.getSelectedIndex() == -1             
+        ){
+            JOptionPane.showMessageDialog(null, "Please Select a Section");              
+        }
+        else{
+             if(JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+                 try{
             con = DBConnection.connect();
             Teacher t = new Teacher();
             sql = "UPDATE sections set t1 = ?, t2 = ?, t3 = ?, t4 = ? where id = ?";
@@ -283,7 +294,10 @@ public class editSection extends javax.swing.JFrame {
             catch (Exception e){
                JOptionPane.showMessageDialog(null, e);  
             } 
-        }        
+        }
+             }
+             
+        }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed

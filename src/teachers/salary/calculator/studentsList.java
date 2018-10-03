@@ -76,9 +76,7 @@ public class studentsList extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jButton10 = new javax.swing.JButton();
         jComboBox5 = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
@@ -147,13 +145,7 @@ public class studentsList extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 17)); // NOI18N
-        jLabel2.setText("Field:");
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel5.setText("0 => Engineering & 1 => Medical ");
 
         jButton10.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jButton10.setText("Back");
@@ -254,19 +246,11 @@ public class studentsList extends javax.swing.JFrame {
                         .addComponent(jButton9)
                         .addGap(255, 255, 255))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5)
-                                .addGap(228, 228, 228)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(330, 330, 330)))
+                        .addGap(115, 115, 115)
+                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(343, 343, 343)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel20)
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
@@ -321,17 +305,10 @@ public class studentsList extends javax.swing.JFrame {
                         .addComponent(jLabel4)
                         .addGap(39, 39, 39))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel20))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel5))))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -475,9 +452,13 @@ public class studentsList extends javax.swing.JFrame {
                     jTextField4.setText(id);
                     jTextField3.setText(t.capitalizeTeacherName(name));                
                 
-                    sql = "Select students.id as 'Student ID',name as 'Student Name',slip_no as 'Slip Number',fees as 'Fees',field as 'Field' from studentfees inner join students on studentfees.std_id = students.id where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
+                    sql = "Select students.id as 'Student ID',name as 'Student Name',slip_no as 'Slip Number',fees as 'Fees',fields.field as 'Field' from studentfees "
+                            + "inner join students on studentfees.std_id = students.id "
+                            + "inner join fields on students.field = fields.id "
+                            + "where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
                     ps = con.prepareStatement(sql);
                     rs = ps.executeQuery();
+                    jTable1.setEnabled(false);                    
                     jTable1.setModel(DbUtils.resultSetToTableModel(rs));
                     
                     sql = "SELECT count(*) as 'tot_stds' from studentfees inner join students on studentfees.std_id = students.id where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;
@@ -518,7 +499,7 @@ public class studentsList extends javax.swing.JFrame {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         setVisible(false);
-        menu m = new menu();
+        otherInfoMenu m = new otherInfoMenu();
         m.setVisible(true);
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -591,11 +572,9 @@ public class studentsList extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

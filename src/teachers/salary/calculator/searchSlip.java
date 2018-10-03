@@ -83,7 +83,6 @@ public class searchSlip extends javax.swing.JFrame {
         });
 
         textField4.setEditable(false);
-        textField4.setEnabled(false);
         textField4.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,7 +97,6 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel6.setText("Section");
 
         textField5.setEditable(false);
-        textField5.setEnabled(false);
         textField5.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,7 +108,6 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel7.setText("Month");
 
         textField6.setEditable(false);
-        textField6.setEnabled(false);
         textField6.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,7 +119,6 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel8.setText("Monthly Fees");
 
         textField7.setEditable(false);
-        textField7.setEnabled(false);
         textField7.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,7 +130,6 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel9.setText("Admission Fees");
 
         textField8.setEditable(false);
-        textField8.setEnabled(false);
         textField8.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,7 +141,6 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel10.setText("Notes Fees");
 
         textField9.setEditable(false);
-        textField9.setEnabled(false);
         textField9.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +152,6 @@ public class searchSlip extends javax.swing.JFrame {
         jLabel11.setText("Field");
 
         textField10.setEditable(false);
-        textField10.setEnabled(false);
         textField10.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,7 +183,6 @@ public class searchSlip extends javax.swing.JFrame {
         });
 
         textField11.setEditable(false);
-        textField11.setEnabled(false);
         textField11.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

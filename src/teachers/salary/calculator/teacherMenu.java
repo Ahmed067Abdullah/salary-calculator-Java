@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 public class teacherMenu extends javax.swing.JFrame {
 
     public teacherMenu() {
-        super("Teachers Menu");
+        super("Records Menu");
         initComponents();
     }
 
@@ -171,14 +171,15 @@ public class teacherMenu extends javax.swing.JFrame {
             editTeacher et = new editTeacher();
             et.setVisible(true);
         }
-
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        JOptionPane.showMessageDialog(null, "This feature is currently disabled");
-//        setVisible(false);
-//        editSection et = new editSection();
-//        et.setVisible(true);
+        // Only contniue if yes
+        if(JOptionPane.showConfirmDialog(null, "Avoid using this feature in the middle of session as it would reflect changes in salaries of all previous months.\n Are you sure want to continue?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){       
+            setVisible(false);
+            editSection et = new editSection();
+            et.setVisible(true);
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed

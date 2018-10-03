@@ -27,8 +27,22 @@ public class addStudent extends javax.swing.JFrame {
                 jComboBox6.addItem(rs.getString("sectionName"));
             }
         }
-        catch(Exception e){
-            
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        finally
+        {
+            try 
+            {
+                rs.close();
+                ps.close();
+                con.close();
+            } 
+            catch (Exception e)
+            {
+               JOptionPane.showMessageDialog(null, e);  
+            } 
         }
     }
     

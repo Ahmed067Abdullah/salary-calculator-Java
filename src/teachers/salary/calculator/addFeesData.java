@@ -92,6 +92,7 @@ public class addFeesData extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         textField8 = new java.awt.TextField();
         textField9 = new java.awt.TextField();
+        jButton7 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -104,7 +105,6 @@ public class addFeesData extends javax.swing.JFrame {
         jLabel2.setText("Slip Number");
 
         textField1.setEditable(false);
-        textField1.setEnabled(false);
         textField1.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,7 +185,6 @@ public class addFeesData extends javax.swing.JFrame {
         jLabel8.setText("Last Slip Number");
 
         textField6.setEditable(false);
-        textField6.setEnabled(false);
         textField6.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -212,7 +211,6 @@ public class addFeesData extends javax.swing.JFrame {
         });
 
         textField8.setEditable(false);
-        textField8.setEnabled(false);
         textField8.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,11 +219,18 @@ public class addFeesData extends javax.swing.JFrame {
         });
 
         textField9.setEditable(false);
-        textField9.setEnabled(false);
         textField9.setFont(new java.awt.Font("Dialog", 0, 22)); // NOI18N
         textField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textField9ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jButton7.setText("Find Student ID");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
             }
         });
 
@@ -234,7 +239,9 @@ public class addFeesData extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addGap(37, 37, 37))
             .addGroup(layout.createSequentialGroup()
@@ -355,7 +362,9 @@ public class addFeesData extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30))))
         );
 
@@ -607,6 +616,13 @@ public class addFeesData extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_textField9ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        setVisible(false);
+        findStudentId m = new findStudentId();
+        m.setVisible(true);        
+
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -649,6 +665,7 @@ public class addFeesData extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;

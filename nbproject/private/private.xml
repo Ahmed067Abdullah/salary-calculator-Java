@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/searchSlip.java</file>
-            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/addFeesData.java</file>
-            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/deleteRecord.java</file>
-            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/editTeacher.java</file>
-            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/createSection.java</file>
+            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/otherInfoMenu.java</file>
+            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/studentReciepts.java</file>
+            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/studentsList.java</file>
+            <file>file:/C:/Users/Microsoft/Documents/NetBeansProjects/Teachers%20Salary%20Calculator/src/teachers/salary/calculator/viewDefaulters.java</file>
         </group>
     </open-files>
 </project-private>

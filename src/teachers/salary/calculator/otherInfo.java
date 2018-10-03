@@ -539,7 +539,7 @@ public class otherInfo extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         setVisible(false);
-        menu m = new menu();
+        otherInfoMenu m = new otherInfoMenu();
         m.setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
