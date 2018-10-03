@@ -12,40 +12,32 @@ public class viewDefaulters extends javax.swing.JFrame {
     ResultSet rs;
     PreparedStatement ps;
     String sql;
-    
+
     public viewDefaulters() {
         super("Defaulters");
         initComponents();
-        
+
         con = DBConnection.connect();
-        
+
         // Populating sections combo box
         sql = "Select sectionName from sections";
-        try
-        {
+        try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 jComboBox6.addItem(rs.getString("sectionName"));
             }
             jComboBox6.addItem("All");
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 rs.close();
                 ps.close();
                 con.close();
-            } 
-            catch (Exception e)
-            {
-               JOptionPane.showMessageDialog(null, e);  
-            } 
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
     }
 
@@ -164,13 +156,13 @@ public class viewDefaulters extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(197, 197, 197)
                         .addComponent(jLabel20)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,11 +176,11 @@ public class viewDefaulters extends javax.swing.JFrame {
                     .addComponent(jLabel13)
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -209,55 +201,51 @@ public class viewDefaulters extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox6ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-            String monthConflict;
-            int month = jComboBox5.getSelectedIndex();
+        String monthConflict;
+        int month = jComboBox5.getSelectedIndex();
 
-            con = DBConnection.connect();
-           
-            try{
-                String sectionIdConflict;
-                
-                Section s = new Section();
-                boolean flag1 = false;
+        con = DBConnection.connect();
 
-                // Calling getSectionId() to get secId of selected section
-                int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
+        try {
+            String sectionIdConflict;
 
-                if(jComboBox6.getSelectedIndex() == jComboBox6.getItemCount() - 1){
-                    flag1 = true;
-                    sectionIdConflict = "";
-                    // conflict5 set in next while loop
-                }
-                else{
-                    sectionIdConflict = " and section = "+secId;
-                }
-                
-                sql = "SELECT students.id as 'Student ID', name as 'Student Name', fields.field as 'Field' from students "
-                        + "left join (select * from studentfees where month = ?) studentfees on students.id = studentfees.std_id "
-                        + "inner join fields on students.field = fields.id "
-                        + " where studentfees.std_id is null "+sectionIdConflict;
-                ps = con.prepareStatement(sql);
-                ps.setInt(1, month);
-                rs = ps.executeQuery();
-                jTable1.setEnabled(false);                
-                jTable1.setModel(DbUtils.resultSetToTableModel(rs));
-                if(jTable1.getRowCount() == 0){
-                JOptionPane.showMessageDialog(null, "Sorry, No Defaulters Found");                    
-                }
+            Section s = new Section();
+            boolean flag1 = false;
+
+            // Calling getSectionId() to get secId of selected section
+            int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
+
+            if (jComboBox6.getSelectedIndex() == jComboBox6.getItemCount() - 1) {
+                flag1 = true;
+                sectionIdConflict = "";
+            } else {
+                sectionIdConflict = " and section = " + secId;
             }
-            catch(Exception e){
+
+            // Fetching only those students of given section who are in students table but not in studentfees table for given month
+            sql = "SELECT students.id as 'Student ID', upper(substr(name, 1, 1))||substr(name, 2) as 'Student Name', fields.field as 'Field' from students "
+                    + "left join (select * from studentfees where month = ?) studentfees on students.id = studentfees.std_id "
+                    + "inner join fields on students.field = fields.id "
+                    + " where studentfees.std_id is null " + sectionIdConflict;
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, month);
+            rs = ps.executeQuery();
+            jTable1.setEnabled(false);
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+            if (jTable1.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, No Defaulters Found");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                ps.close();
+                con.close();
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
-            finally{
-                try {
-                    rs.close();
-                    ps.close();
-                    con.close();
-                }
-                catch (Exception e){
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            }
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed

@@ -11,12 +11,13 @@ public class searchSlip extends javax.swing.JFrame {
     PreparedStatement ps;
     ResultSet rs;
     String sql;
+
     public searchSlip() {
         super("Search Slip");
         initComponents();
     }
-    
-    public void clearFields(){
+
+    public void clearFields() {
         textField2.setText("");
         textField3.setText("");
         textField4.setText("");
@@ -25,8 +26,9 @@ public class searchSlip extends javax.swing.JFrame {
         textField7.setText("");
         textField8.setText("");
         textField9.setText("");
-        textField10.setText("");         
+        textField10.setText("");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -361,62 +363,55 @@ public class searchSlip extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         String id = textField2.getText().trim();
         String slipNo = textField3.getText().trim();
-        
+
         // Checking for empty fields
-        if(id.equals("") && slipNo.equals("")){
+        if (id.equals("") && slipNo.equals("")) {
             clearFields();
-            JOptionPane.showMessageDialog(null, "Enter either ID or Slip no");            
-        }
-        else{
+            JOptionPane.showMessageDialog(null, "Enter either ID or Slip no");
+        } else {
             con = DBConnection.connect();
             int flag = 0;
-            
+
             // Search by id if available
-            if(!id.equals("")){   
+            if (!id.equals("")) {
                 sql = "Select * from studentfees inner join students on studentfees.std_id = students.id where studentfees.id = ?";
-                try{
-                    ps = con.prepareStatement(sql); 
+                try {
+                    ps = con.prepareStatement(sql);
                     ps.setString(1, id);
                     rs = ps.executeQuery();
-                    while(rs.next()){
+                    while (rs.next()) {
                         flag = 1;
                         break;
                     }
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
-            }
-            
-            // Search by slipno only if id not available
-            else{                 
+            } // Search by slipno only if id not available
+            else {
                 sql = "Select * from studentfees inner join students on studentfees.std_id = students.id where slip_no = ?";
-                try{
+                try {
                     ps = con.prepareStatement(sql);
                     ps.setString(1, slipNo);
                     rs = ps.executeQuery();
-                    while(rs.next()){     
+                    while (rs.next()) {
                         flag = 2;
                         break;
                     }
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
-            try{      
-                if(flag == 1){
+            try {
+                if (flag == 1) {
                     slipNo = rs.getString("slip_no");
-                }
-                else if(flag == 2){
+                } else if (flag == 2) {
                     id = rs.getString("id");
-                }
-                else{
+                } else {
                     clearFields();
                     con.close();
                     throw new resultNotFoundException("Invalid ID or Slip no, Record not found");
                 }
-                
+
                 // Fetching deatils from resultSet
                 int secId = rs.getInt("section");
                 int monthId = rs.getInt("month");
@@ -424,16 +419,16 @@ public class searchSlip extends javax.swing.JFrame {
                 String fees = rs.getString("fees");
                 String name = rs.getString("name");
                 String std_id = rs.getString("std_id");
-                
+
                 String adFee = "0";
                 String noteFee = "0";
-                
+
                 // Search in admission fee for that slip no, if found then override then current value of 0
                 sql = "Select * from admission_fees where slip_no  = ?";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, slipNo);
                 rs = ps.executeQuery();
-                while(rs.next()){     
+                while (rs.next()) {
                     adFee = rs.getString("fees");
                 }
                 // Search in notes fee for that slip no, if found then override then current value of 0
@@ -441,19 +436,19 @@ public class searchSlip extends javax.swing.JFrame {
                 ps = con.prepareStatement(sql);
                 ps.setString(1, slipNo);
                 rs = ps.executeQuery();
-                while(rs.next()){     
+                while (rs.next()) {
                     noteFee = rs.getString("fees");
-                }                
+                }
                 Section s = new Section();
                 String secName = s.getSectionName(secId);
-                
+
                 Month m = new Month();
                 String month = m.getMonthName(monthId);
-                
+
                 String field = fieldId == 0 ? "Engineering" : "Medical";
-                
+
                 Number n = new Number();
-                
+
                 // Populating input fields with fetched data
                 textField2.setText(id);
                 textField3.setText(slipNo);
@@ -463,27 +458,23 @@ public class searchSlip extends javax.swing.JFrame {
                 textField7.setText(n.withCommas(Integer.parseInt(fees)));
                 textField8.setText(n.withCommas(Integer.parseInt(adFee)));
                 textField9.setText(n.withCommas(Integer.parseInt(noteFee)));
-                textField10.setText(field); 
-                textField11.setText(std_id); 
-            }
-            catch(resultNotFoundException e){
-                JOptionPane.showMessageDialog(null, e);                
-            }
-            catch(Exception e){
-                    JOptionPane.showMessageDialog(null, e);
-            }
-            finally{
+                textField10.setText(field);
+                textField11.setText(std_id);
+            } catch (resultNotFoundException e) {
+                JOptionPane.showMessageDialog(null, e);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
                 try {
                     rs.close();
                     ps.close();
                     con.close();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
-            
-        }    
+
+        }
 
     }//GEN-LAST:event_jButton5ActionPerformed
 

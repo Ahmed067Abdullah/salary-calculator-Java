@@ -6,59 +6,64 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class otherInfo extends javax.swing.JFrame {
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     String sql;
-    
+
     public otherInfo() {
         super("Miscellaneous Information");
-        initComponents();        
+        initComponents();
     }
-    
-    public void getInfo(int month){
+
+    public void getInfo(int month) {
         // Conflict1, Conflict2 for months, if All is selected from dropdown then value of month is 12, so search irrespective of months, else search for that particular month       
         String conflict;
-        if(month == 12)
+        if (month == 12) {
             conflict = "";
-        else
-            conflict = " where month = "+month;            
-        
-        int engCash  =0, medCash = 0,engNotes = 0,medNotes = 0,engAd = 0,medAd = 0,strtSlip,endSlip,totalSlips;
-        
+        } else {
+            conflict = " where month = " + month;
+        }
+
+        int engCash = 0, medCash = 0, engNotes = 0, medNotes = 0, engAd = 0, medAd = 0, strtSlip, endSlip, totalSlips;
+
         con = DBConnection.connect();
-        try{
+        try {
             // Finding sum of fees field = 1 for medical and 0 for engg;      
             sql = "SELECT  field, sum(fees) as 'monthlyFees' from studentfees inner join students on studentfees.std_id = students.id " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
-                if(rs.getInt("field") == 0)
-                    engCash = rs.getInt("monthlyFees"); 
-                else if(rs.getInt("field") == 1)
-                    medCash = rs.getInt("monthlyFees"); 
+            while (rs.next()) {
+                if (rs.getInt("field") == 0) {
+                    engCash = rs.getInt("monthlyFees");
+                } else if (rs.getInt("field") == 1) {
+                    medCash = rs.getInt("monthlyFees");
+                }
             }
-            
+
             // Finding sum of fees in notes fees after joining notes table with main fees table, field is 1 for medical and 0 for engineering
-            sql = "SELECT field, sum(notes_fees.fees) as 'notesFees' from studentfees inner join students on studentfees.std_id = students.id inner join notes_fees on studentfees.slip_no = notes_fees.slip_no "+ conflict +" group by field";
+            sql = "SELECT field, sum(notes_fees.fees) as 'notesFees' from studentfees inner join students on studentfees.std_id = students.id inner join notes_fees on studentfees.slip_no = notes_fees.slip_no " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
-                if(rs.getInt("field") == 0)
-                    engNotes = rs.getInt("notesFees"); 
-                else if(rs.getInt("field") == 1)
-                    medNotes = rs.getInt("notesFees"); 
+            while (rs.next()) {
+                if (rs.getInt("field") == 0) {
+                    engNotes = rs.getInt("notesFees");
+                } else if (rs.getInt("field") == 1) {
+                    medNotes = rs.getInt("notesFees");
+                }
             }
 
             // Finding sum of fees in admission fees after joining admission table with main fees table, field is 1 for medical, 0 for engg
             sql = "SELECT field,sum(admission_fees.fees) as 'adFees' from studentfees inner join students on studentfees.std_id = students.id inner join admission_fees on studentfees.slip_no = admission_fees.slip_no " + conflict + " group by field";
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
-                if(rs.getInt("field") == 0)
-                    engAd = rs.getInt("adFees"); 
-                else if(rs.getInt("field") == 1)
+            while (rs.next()) {
+                if (rs.getInt("field") == 0) {
+                    engAd = rs.getInt("adFees");
+                } else if (rs.getInt("field") == 1) {
                     medAd = rs.getInt("adFees");
+                }
             }
 
             // Fetching slip no of first slip
@@ -72,43 +77,49 @@ public class otherInfo extends javax.swing.JFrame {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             endSlip = rs.getInt("slip_no");
-            
+
             // Calculating total number of slips
             sql = "SELECT count(*) as 'total_slips' from studentfees " + conflict;
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             totalSlips = rs.getInt("total_slips");
-  
+
             // Populating fields with fetched data
-            Number n = new Number();        
+            Number n = new Number();
             textField13.setText(Integer.toString(strtSlip));
             textField14.setText(Integer.toString(endSlip));
-            textField17.setText(n.withCommas(totalSlips));        
+            textField17.setText(n.withCommas(totalSlips));
             textField19.setText(n.withCommas(engNotes));
             textField16.setText(n.withCommas(medNotes));
             textField18.setText(n.withCommas(engAd));
-            textField15.setText(n.withCommas(medAd));       
+            textField15.setText(n.withCommas(medAd));
             textField12.setText(n.withCommas(engCash));
             textField11.setText(n.withCommas(medCash));
             textField10.setText(n.withCommas(medCash + engCash + engNotes + medNotes + engAd + medAd));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
+            textField13.setText("");
+            textField14.setText("");
+            textField17.setText("");
+            textField19.setText("");
+            textField16.setText("");
+            textField18.setText("");
+            textField15.setText("");
+            textField12.setText("");
+            textField11.setText("");
+            textField10.setText("");
             JOptionPane.showMessageDialog(null, "No Records Availible");
-        }
-        finally{
-            try{
+        } finally {
+            try {
                 con.close();
                 ps.close();
                 ps.close();
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
     }
-    
-//            Abondanded Code
 
+//            Abondanded Code
 //            // Finding sum of fees in admission fees after joining admission table with main fees table, field is 0 for engg students            
 //            sql = "SELECT sum(admission_fees.fees) as 'engAd' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where field = 0" + conflict1;
 //            ps = con.prepareStatement(sql);
@@ -120,7 +131,6 @@ public class otherInfo extends javax.swing.JFrame {
 //            ps = con.prepareStatement(sql);
 //            rs = ps.executeQuery();
 //            medAd = rs.getInt("medAd");    
-    
 //            // Finding sum of fees in notes fees after joining notes table with main fees table, field is 0 for engg students
 //            sql = "SELECT sum(notes_fees.fees) as 'engNotes' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where field = 0" + conflict1;
 //            ps = con.prepareStatement(sql);
@@ -132,7 +142,6 @@ public class otherInfo extends javax.swing.JFrame {
 //            ps = con.prepareStatement(sql);
 //            rs = ps.executeQuery();
 //            medNotes = rs.getInt("medNotes");
-    
 //            // Finding sum of engineering fees so field = 0
 //            sql = "SELECT  sum(fees) as 'engCash'  from studentfees where field = 0" + conflict1;
 //            ps = con.prepareStatement(sql);
@@ -144,7 +153,6 @@ public class otherInfo extends javax.swing.JFrame {
 //            ps = con.prepareStatement(sql);
 //            rs = ps.executeQuery();
 //            medCash = rs.getInt("medCash");
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -12,18 +12,19 @@ public class editTeacher extends javax.swing.JFrame {
     PreparedStatement ps;
     String sql;
     int idForUpdation;
+
     public editTeacher() {
         super("Edit Teacher Breakup");
         initComponents();
     }
-    
-    public boolean isNumeric(String str){
-        return str.matches("^\\d+$");  
+
+    public boolean isNumeric(String str) {
+        return str.matches("^\\d+$");
     }
-    
-    public void clearFields(){
+
+    public void clearFields() {
         jTextField4.setText("");
-        jTextField6.setText("");        
+        jTextField6.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -208,147 +209,129 @@ public class editTeacher extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         String id = jTextField5.getText().trim();
         String name = jTextField3.getText().trim().toLowerCase();
-        
+
         // Checking for empty fields
-        if(id.equals("") && name.equals("")){
+        if (id.equals("") && name.equals("")) {
             clearFields();
-            JOptionPane.showMessageDialog(null, "Enter either ID or Name");            
-        }
-        else{
+            JOptionPane.showMessageDialog(null, "Enter either ID or Name");
+        } else {
             con = DBConnection.connect();
             int flag = 0;
-            
+
             // Search by id if available
-            if(!id.equals("")){   
+            if (!id.equals("")) {
                 sql = "Select * from teachers where id = ?";
-                try{
-                    ps = con.prepareStatement(sql); 
+                try {
+                    ps = con.prepareStatement(sql);
                     ps.setString(1, id);
                     rs = ps.executeQuery();
-                    while(rs.next()){
+                    while (rs.next()) {
                         flag = 1;
                         break;
                     }
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
-            }
-            
-            // Search by name if id is not there 
-            else{                 
+            } // Search by name if id is not there 
+            else {
                 sql = "Select * from teachers where t_name = ?";
-                try{
+                try {
                     ps = con.prepareStatement(sql);
                     ps.setString(1, name);
                     rs = ps.executeQuery();
-                    while(rs.next()){     
+                    while (rs.next()) {
                         flag = 2;
                         break;
                     }
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
-            try{
-                int t_breakup,t_course;
-                
+            try {
+                int t_breakup, t_course;
+
                 // Setting id and name w.r.t to previous if-else
-                if(flag == 1){
+                if (flag == 1) {
                     name = rs.getString("t_name");
-                }
-                else if(flag == 2){
+                } else if (flag == 2) {
                     id = rs.getString("id");
-                }else{
+                } else {
                     clearFields();
                     throw new resultNotFoundException("Invalid ID or Name, Teacher not found");
                 }
                 t_course = rs.getInt("t_course");
                 t_breakup = rs.getInt("t_breakup");
-                
+
                 //Finding Course
-                String course,conflict;
-                if(t_course == 0){
+                String course, conflict;
+                if (t_course == 0) {
                     course = "Chemistry";
-                }
-                else if(t_course == 1){
+                } else if (t_course == 1) {
                     course = "Physics";
-                }
-                else if(t_course == 2){
+                } else if (t_course == 2) {
                     course = "Maths";
-                }
-                else if(t_course == 3){
-                    course = "Biology";  
-                }  
-                else{
+                } else if (t_course == 3) {
+                    course = "Biology";
+                } else {
                     course = "Something Wrong";
                 }
-                
+
                 Teacher t = new Teacher();
                 idForUpdation = Integer.parseInt(id);
                 jTextField5.setText(id);
                 jTextField3.setText(t.capitalizeTeacherName(name));
                 jTextField4.setText(course);
                 jTextField6.setText(Integer.toString(t_breakup));
-            }
-            catch(resultNotFoundException e){
-                JOptionPane.showMessageDialog(null, e);                
-            }
-            catch(Exception e){
+            } catch (resultNotFoundException e) {
                 JOptionPane.showMessageDialog(null, e);
-            }
-            finally{
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
                 try {
                     rs.close();
                     ps.close();
                     con.close();
-                } 
-                catch (Exception e){
-                   JOptionPane.showMessageDialog(null, e);  
-                } 
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
             }
-        }    
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // Checking for empty fields
-        if(idForUpdation < 1 || jTextField6.getText().trim().equals("")){
-            JOptionPane.showMessageDialog(null, "Incomplete Details");              
-        }
-        // Checking for invalid data types
-        else if(!isNumeric(jTextField6.getText().trim())){
-            JOptionPane.showMessageDialog(null, "Invalid input");             
-        }else{
+        if (idForUpdation < 1 || jTextField6.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Incomplete Details");
+        } // Checking for invalid data types
+        else if (!isNumeric(jTextField6.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Invalid input");
+        } else {
             // Only continue if press yes
-            if(JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+            if (JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
                 int t_breakup = Integer.parseInt(jTextField6.getText().trim());
-                try{
-                    con = DBConnection.connect();   
+                try {
+                    con = DBConnection.connect();
                     sql = "update teachers set t_breakup = ? where id = ?";
-                    ps = con.prepareStatement(sql); 
-                    ps.setInt(1, t_breakup); 
+                    ps = con.prepareStatement(sql);
+                    ps.setInt(1, t_breakup);
                     ps.setInt(2, idForUpdation);
                     ps.execute();
-                
+
                     JOptionPane.showMessageDialog(null, "Record Updated Successfully");
                     setVisible(false);
                     teacherMenu m = new teacherMenu();
                     m.setVisible(true);
-                
-                }
-                catch(Exception e){
+
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
-                }      
-                finally{
+                } finally {
                     try {
                         rs.close();
                         ps.close();
                         con.close();
-                    } 
-                    catch (Exception e){
-                        JOptionPane.showMessageDialog(null, e);  
-                    } 
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
                 }
             }
         }

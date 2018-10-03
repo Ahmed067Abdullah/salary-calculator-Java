@@ -18,10 +18,14 @@ public class viewSections extends javax.swing.JFrame {
         initComponents();
         
         con = DBConnection.connect();
-        
+        // Fetching teaechers of all sections
         try{    
-            sql = "SELECT sectionName as 'Section', tC.t_name as 'Chemistry', tP.t_name as 'Physics', tM.t_name as 'Maths', tB.t_name as 'Biology' from "
-                    + "sections inner join teachers tC on t1 = tC.id "
+            sql = "SELECT sectionName as 'Section', "
+                    + "upper(substr(tC.t_name, 1, 1))||substr(tC.t_name, 2) as 'Chemistry', "
+                    + "upper(substr(tP.t_name, 1, 1))||substr(tP.t_name, 2) as 'Physics', "
+                    + "upper(substr(tM.t_name, 1, 1))||substr(tM.t_name, 2) as 'Maths', "
+                    + "upper(substr(tB.t_name, 1, 1))||substr(tB.t_name, 2) as 'Biology' from sections "
+                    + " inner join teachers tC on t1 = tC.id "
                     + " inner join teachers tP on t2 = tP.id "
                     + " inner join teachers tM on t3 = tM.id "
                     + " inner join teachers tB on t4 = tB.id ";
@@ -106,7 +110,7 @@ public class viewSections extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(270, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -117,9 +121,9 @@ public class viewSections extends javax.swing.JFrame {
                         .addComponent(jLabel20)
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 674, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 45, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 677, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

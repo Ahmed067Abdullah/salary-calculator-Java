@@ -166,7 +166,7 @@ public class teacherMenu extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // Only contniue if yes
-        if(JOptionPane.showConfirmDialog(null, "Avoid using this feature in the middle of session as it would reflect changes in salaries of all previous months.\n Are you sure want to continue?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+        if (JOptionPane.showConfirmDialog(null, "Avoid using this feature in the middle of session as it would reflect changes in salaries of all previous months.\n Are you sure want to continue?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
             setVisible(false);
             editTeacher et = new editTeacher();
             et.setVisible(true);
@@ -175,7 +175,7 @@ public class teacherMenu extends javax.swing.JFrame {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // Only contniue if yes
-        if(JOptionPane.showConfirmDialog(null, "Avoid using this feature in the middle of session as it would reflect changes in salaries of all previous months.\n Are you sure want to continue?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){       
+        if (JOptionPane.showConfirmDialog(null, "Avoid using this feature in the middle of session as it would reflect changes in salaries of all previous months.\n Are you sure want to continue?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
             setVisible(false);
             editSection et = new editSection();
             et.setVisible(true);
@@ -207,9 +207,12 @@ public class teacherMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        setVisible(false);
-        editStudent m = new editStudent();
-        m.setVisible(true);
+        // Only contniue if yes
+        if (JOptionPane.showConfirmDialog(null, "Avoid using this feature in the middle of session as it would reflect changes in salaries of all previous months.\n Are you sure want to continue?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+            setVisible(false);
+            editStudent m = new editStudent();
+            m.setVisible(true);
+        }
     }//GEN-LAST:event_jButton16ActionPerformed
 
     /**

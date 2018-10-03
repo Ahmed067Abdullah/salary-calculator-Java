@@ -6,45 +6,40 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class editSection extends javax.swing.JFrame {
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     String sql;
     int idOfSection = 0;
-    
+
     public editSection() {
         super("Edit Section");
         initComponents();
-        
+
         // Populating combobox with current section names
         con = DBConnection.connect();
         sql = "Select sectionName,id from sections";
-        try{
+        try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
-                jComboBox5.addItem(rs.getString("sectionName"));                     
+            while (rs.next()) {
+                jComboBox5.addItem(rs.getString("sectionName"));
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 rs.close();
                 ps.close();
                 con.close();
-            } 
-            catch (Exception e)
-            {
-               JOptionPane.showMessageDialog(null, e);  
-            } 
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
 
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -183,28 +178,28 @@ public class editSection extends javax.swing.JFrame {
                         .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(134, 134, 134))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
                         .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(271, 271, 271))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(185, 185, 185))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addContainerGap())))
+                        .addGap(198, 198, 198))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -222,16 +217,16 @@ public class editSection extends javax.swing.JFrame {
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
+                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(918, 647));
+        setSize(new java.awt.Dimension(818, 647));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -258,45 +253,42 @@ public class editSection extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        
+        // If No section is selected
+        if (jComboBox1.getSelectedIndex() == -1
+                || jComboBox2.getSelectedIndex() == -1
+                || jComboBox3.getSelectedIndex() == -1
+                || jComboBox4.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Please Select a Section");
+        } else {
+            // Only continue if yes pressed
+            if (JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+                try {
+                    // Update new values
+                    con = DBConnection.connect();
+                    Teacher t = new Teacher();
+                    sql = "UPDATE sections set t1 = ?, t2 = ?, t3 = ?, t4 = ? where id = ?";
+                    ps = con.prepareStatement(sql);
+                    ps.setInt(1, t.getTeacherId((String) jComboBox1.getSelectedItem()));
+                    ps.setInt(2, t.getTeacherId((String) jComboBox3.getSelectedItem()));
+                    ps.setInt(3, t.getTeacherId((String) jComboBox4.getSelectedItem()));
+                    ps.setInt(4, t.getTeacherId((String) jComboBox2.getSelectedItem()));
+                    ps.setInt(5, idOfSection);
+                    ps.execute();
+                    JOptionPane.showMessageDialog(null, "Section updated successfully");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                } finally {
+                    try {
+                        rs.close();
+                        ps.close();
+                        con.close();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+                }
+            }
 
-        if(
-            jComboBox1.getSelectedIndex() == -1 ||
-            jComboBox2.getSelectedIndex() == -1 ||
-            jComboBox3.getSelectedIndex() == -1 ||
-            jComboBox4.getSelectedIndex() == -1             
-        ){
-            JOptionPane.showMessageDialog(null, "Please Select a Section");              
-        }
-        else{
-             if(JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
-                 try{
-            con = DBConnection.connect();
-            Teacher t = new Teacher();
-            sql = "UPDATE sections set t1 = ?, t2 = ?, t3 = ?, t4 = ? where id = ?";
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, t.getTeacherId((String) jComboBox1.getSelectedItem()));
-            ps.setInt(2, t.getTeacherId((String) jComboBox3.getSelectedItem()));
-            ps.setInt(3, t.getTeacherId((String) jComboBox4.getSelectedItem()));
-            ps.setInt(4, t.getTeacherId((String) jComboBox2.getSelectedItem()));
-            ps.setInt(5, idOfSection);
-            ps.execute();
-            JOptionPane.showMessageDialog(null, "Section updated successfully");  
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }
-        finally{
-            try {
-                rs.close();
-                ps.close();
-                con.close();
-            } 
-            catch (Exception e){
-               JOptionPane.showMessageDialog(null, e);  
-            } 
-        }
-             }
-             
         }
     }//GEN-LAST:event_jButton13ActionPerformed
 
@@ -307,72 +299,64 @@ public class editSection extends javax.swing.JFrame {
         jComboBox3.removeAllItems();
         jComboBox4.removeAllItems();
         String secName = (String) jComboBox5.getSelectedItem();
-        try{
+        try {
             Teacher t = new Teacher();
             con = DBConnection.connect();
-            String []teachers = new String[4];
-            
+            String[] teachers = new String[4];
+
             // get teachers ids of the selected section and store them in the array
             sql = "SELECT id,t1,t2,t3,t4 from sections where sectionName = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, secName);
             rs = ps.executeQuery();
-            while(rs.next()){     
+            while (rs.next()) {
                 teachers[0] = t.getTeacherName(rs.getInt("t1"));
                 teachers[1] = t.getTeacherName(rs.getInt("t2"));
                 teachers[2] = t.getTeacherName(rs.getInt("t3"));
-                teachers[3] = t.getTeacherName(rs.getInt("t4"));      
+                teachers[3] = t.getTeacherName(rs.getInt("t4"));
                 idOfSection = rs.getInt("id");
             }
-            
+
             // Fetching all techers from DB and pushing them in their respective course's combobox
             // Course 0 => Chemistry
             //        1 => Physics
             //        2 => Maths
             //        3 => Biology
             sql = "Select t_name, t_course from teachers";
-            String course,name;
-        
+            String course, name;
+
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next())
-            {
+            while (rs.next()) {
                 System.out.println("1");
                 name = t.capitalizeTeacherName(rs.getString("t_name"));
                 course = rs.getString("t_course");
-                if(course.equals("2")){
-                    jComboBox4.addItem(name);                     
+                if (course.equals("2")) {
+                    jComboBox4.addItem(name);
+                } else if (course.equals("0")) {
+                    jComboBox1.addItem(name);
+                } else if (course.equals("1")) {
+                    jComboBox3.addItem(name);
+                } else if (course.equals("3")) {
+                    jComboBox2.addItem(name);
+                } else {
+                    System.out.println("Error");
                 }
-                else if(course.equals("0")){
-                    jComboBox1.addItem(name);  
-                }
-                else if(course.equals("1")){
-                    jComboBox3.addItem(name);  
-                }
-                else if(course.equals("3")){
-                    jComboBox2.addItem(name);  
-                }
-                else{
-                    System.out.println("Error");                   
-                }
-            }    
-            
+            }
+
             // Selecting the teachers of the selected sections to show by default
-            jComboBox1.setSelectedItem((Object)t.capitalizeTeacherName(teachers[0]));
-            jComboBox3.setSelectedItem((Object)t.capitalizeTeacherName(teachers[1]));
-            jComboBox4.setSelectedItem((Object)t.capitalizeTeacherName(teachers[2]));
-            jComboBox2.setSelectedItem((Object)t.capitalizeTeacherName(teachers[3]));
-        }
-        catch(Exception e){
+            jComboBox1.setSelectedItem((Object) t.capitalizeTeacherName(teachers[0]));
+            jComboBox3.setSelectedItem((Object) t.capitalizeTeacherName(teachers[1]));
+            jComboBox4.setSelectedItem((Object) t.capitalizeTeacherName(teachers[2]));
+            jComboBox2.setSelectedItem((Object) t.capitalizeTeacherName(teachers[3]));
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally{
+        } finally {
             try {
                 rs.close();
                 ps.close();
                 con.close();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }

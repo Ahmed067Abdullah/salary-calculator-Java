@@ -6,47 +6,42 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class editStudent extends javax.swing.JFrame {
+
     Connection con;
     ResultSet rs;
     PreparedStatement ps;
-    String sql,globalId;
+    String sql, globalId;
+
     public editStudent() {
         super("Edit Student");
         initComponents();
-        
+
         con = DBConnection.connect();
         sql = "Select sectionName from sections";
-        try
-        {
+        try {
             // To fill sections drop down
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 jComboBox6.addItem(rs.getString("sectionName"));
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 rs.close();
                 ps.close();
                 con.close();
-            } 
-            catch (Exception e)
-            {
-               JOptionPane.showMessageDialog(null, e);  
-            } 
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
     }
 
-    public boolean isNumeric(String str){
-        return str.matches("^\\d+$");  
+    public boolean isNumeric(String str) {
+        return str.matches("^\\d+$");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -159,43 +154,39 @@ public class editStudent extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel6)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addGap(75, 75, 75)))
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                                    .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                                .addComponent(jRadioButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)))
+                                .addComponent(jLabel12)
+                                .addGap(75, 75, 75)))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(141, 141, 141)
-                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
-                                .addContainerGap())))))
+                        .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(36, 36, 36)
+                            .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(85, 85, 85)
+                            .addComponent(jRadioButton1)
+                            .addGap(18, 18, 18)
+                            .addComponent(jRadioButton2))))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(39, 39, 39))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(39, 39, 39))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,134 +260,132 @@ public class editStudent extends javax.swing.JFrame {
         // Fetching input values
         String id = textField4.getText().trim();
 
-        if(id.equals("")){
-            JOptionPane.showMessageDialog(null, "Please Enter Student ID");            
-        }
-        // Checking for types other than integer
-        else if(!isNumeric(id)){
-            JOptionPane.showMessageDialog(null, "Invalid input");             
-        }
-        else{
-            try{
-                // Checking for duplicate teacher name
+        if (id.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please Enter Student ID");
+        } // Checking for types other than integer
+        else if (!isNumeric(id)) {
+            JOptionPane.showMessageDialog(null, "Invalid input");
+        } else {
+            try {
+                Section s = new Section();
+                // Getting current student data to show for updation
                 con = DBConnection.connect();
                 boolean flag = false;
                 sql = "Select * from students where id = ?";
                 ps = con.prepareStatement(sql);
-                ps.setString(1,id);
+                ps.setString(1, id);
                 rs = ps.executeQuery();
-                while(rs.next()){
+                jComboBox6.setSelectedItem((Object) s.getSectionName(rs.getInt("section")));
+                while (rs.next()) {
                     flag = true;
                     break;
                 }
-                if(flag){
+                if (flag) {
                     globalId = id;
                     textField5.setText(rs.getString("name"));
-                    if(rs.getInt("field") == 0)
+                    if (rs.getInt("field") == 0) {
                         jRadioButton1.setSelected(true);
-                    else
-                        jRadioButton2.setSelected(true); 
-                }
-                else{
+                    } else {
+                        jRadioButton2.setSelected(true);
+                    }
+                } else {
                     JOptionPane.showMessageDialog(null, "Sorry, ID doesn't Exist");
                 }
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
-            }
-            finally{
-                try{
+            } finally {
+                try {
                     rs.close();
                     ps.close();
                     con.close();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
                 }
-                catch(Exception e){
-                    JOptionPane.showMessageDialog(null, e);                
-                }
-            }   
-        }        
+            }
+        }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        // Fetching input values
-        String id = textField4.getText().trim();
-        String name = textField5.getText().trim().toLowerCase();
-        int section = jComboBox6.getSelectedIndex();
+        if (JOptionPane.showConfirmDialog(null, "This opeation will effect salaries of previous months as well, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
 
-        // Checking for empty fields
-        if(jComboBox6.getItemCount() == 0){
-            JOptionPane.showMessageDialog(null, "No section available");                  
-        }
-        else if(name.equals("") || id.equals("")|| (!jRadioButton1.isSelected() && !jRadioButton2.isSelected())){
-            JOptionPane.showMessageDialog(null, "Some details are missing");            
-        }
-        // Checking for types other than integer
-        else if(!isNumeric(id) || isNumeric(name)){
-            JOptionPane.showMessageDialog(null, "Invalid input");             
-        }
-        else{
-            boolean flag = false;
-            if(!globalId.equals(id)){
-                if(JOptionPane.showConfirmDialog(null, "You have changed Student's ID, are you sure want to continue", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) {
-                    flag = true;
-                }              
-            }
-            if(globalId.equals(id) || flag){
-                try{
-                    // Checking for duplicate id
-                    con = DBConnection.connect();
-                    boolean flagDup = false;
-                    if(flag){
-                        sql = "Select name from students where id = ?";
-                        ps = con.prepareStatement(sql);
-                        ps.setString(1,id);
-                        rs = ps.executeQuery();
-                        while(rs.next()){
-                            flagDup = true;
-                            break;
-                        }    
+            // Fetching input values
+            String id = textField4.getText().trim();
+            String name = textField5.getText().trim().toLowerCase();
+            int section = jComboBox6.getSelectedIndex();
+
+            // Checking for empty fields
+            if (jComboBox6.getItemCount() == 0) {
+                JOptionPane.showMessageDialog(null, "No section available");
+            } else if (name.equals("") || id.equals("") || (!jRadioButton1.isSelected() && !jRadioButton2.isSelected())) {
+                JOptionPane.showMessageDialog(null, "Some details are missing");
+            } // Checking for types other than integer
+            else if (!isNumeric(id) || isNumeric(name)) {
+                JOptionPane.showMessageDialog(null, "Invalid input");
+            } else {
+
+                // flag indicates that student id is updated and user wants to continue
+                boolean flag = false;
+                if (!globalId.equals(id)) {
+                    if (JOptionPane.showConfirmDialog(null, "You have changed Student's ID, are you sure want to continue", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        flag = true;
                     }
-                    if(!flag || !flagDup){
-                        Section s = new Section();
-                        int secId = s.getSectionId((String)jComboBox6.getSelectedItem());
-                        int fieldId = jRadioButton1.isSelected() ? 0 : 1;
-                        String idConflict = flag ? globalId : id;
-                        // If no duplicate found then update
-                        sql = "UPDATE students set id = ?, name = ? , section = ? , field = ? where id = ?";
-                        ps = con.prepareStatement(sql); 
-                        ps.setString(1, id);
-                        ps.setString(2, name);
-                        ps.setInt(3, secId);
-                        ps.setInt(4, fieldId);
-                        ps.setString(5, idConflict);
-                        ps.execute();
+                }
+                if (globalId.equals(id) || flag) {
+                    try {
+                        // Checking for duplicate id
+                        con = DBConnection.connect();
+                        // flagDup indicates that whether a record exists on the updated id or not
+                        boolean flagDup = false;
+                        if (flag) {
+                            sql = "Select name from students where id = ?";
+                            ps = con.prepareStatement(sql);
+                            ps.setString(1, id);
+                            rs = ps.executeQuery();
+                            while (rs.next()) {
+                                flagDup = true;
+                                break;
+                            }
+                        }
+                        // Only continue if either student id isn't changed (!flag) or id is changed and there is no record against new id (flagDup)
+                        if (!flag || !flagDup) {
+                            Section s = new Section();
+                            int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
+                            int fieldId = jRadioButton1.isSelected() ? 0 : 1;
+
+                            // idConflict is used to find which record to update, if id is changed, flag is true so use id used for searching, else use current id 
+                            String idConflict = flag ? globalId : id;
+                            // If no duplicate found then update
+                            sql = "UPDATE students set id = ?, name = ? , section = ? , field = ? where id = ?";
+                            ps = con.prepareStatement(sql);
+                            ps.setString(1, id);
+                            ps.setString(2, name);
+                            ps.setInt(3, secId);
+                            ps.setInt(4, fieldId);
+                            ps.setString(5, idConflict);
+                            ps.execute();
 //                
-                        JOptionPane.showMessageDialog(null, "Student Edited successfully");
-                        textField4.setText("");
-                        textField5.setText("");
+                            JOptionPane.showMessageDialog(null, "Student Edited successfully");
+                            textField4.setText("");
+                            textField5.setText("");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "ID Already in use!");
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, e);
+                    } finally {
+                        try {
+                            rs.close();
+                            ps.close();
+                            con.close();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, e);
+                        }
                     }
-                    else{
-                        JOptionPane.showMessageDialog(null, "ID Already in use!");
-                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Bhag");
                 }
-                catch(Exception e){
-                    JOptionPane.showMessageDialog(null, e);
-                }
-                finally{
-                    try{
-                        rs.close();
-                        ps.close();
-                        con.close();
-                    }
-                    catch(Exception e){
-                        JOptionPane.showMessageDialog(null, e);                
-                    }
-                }   
             }
-            else{
-                        JOptionPane.showMessageDialog(null, "Bhag");                   
-            }
-        }    
+        }
     }//GEN-LAST:event_jButton14ActionPerformed
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

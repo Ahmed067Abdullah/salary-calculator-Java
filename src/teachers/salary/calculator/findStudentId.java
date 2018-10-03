@@ -4,46 +4,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 public class findStudentId extends javax.swing.JFrame {
+
     Connection con;
-    ResultSet rs,rsA,rsN;
+    ResultSet rs, rsA, rsN;
     PreparedStatement ps;
     String sql;
-    
+
     public findStudentId() {
+        super("Find Student ID");
         initComponents();
-         con = DBConnection.connect();
-           
+        con = DBConnection.connect();
+
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
         jTextField4 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton10 = new javax.swing.JButton();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel3.setFont(new java.awt.Font("Trajan Pro", 0, 44)); // NOI18N
         jLabel3.setText("Find ID");
         jLabel3.setBorder(javax.swing.BorderFactory.createCompoundBorder());
-
-        jButton9.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        jButton9.setText("Search");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
 
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
@@ -93,48 +86,28 @@ public class findStudentId extends javax.swing.JFrame {
             }
         });
 
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home.png"))); // NOI18N
-        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel20MouseClicked(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jLabel2.setText("Just Enter Few Letters");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(174, 174, 174)
-                        .addComponent(jLabel20)
-                        .addContainerGap())
+                        .addGap(236, 236, 236))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(188, 188, 188))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                        .addGap(188, 188, 188))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton9)))))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(121, 121, 121))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,76 +117,64 @@ public class findStudentId extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
 
         setSize(new java.awt.Dimension(598, 647));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-      
-    }//GEN-LAST:event_jButton9ActionPerformed
-
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-                        JOptionPane.showMessageDialog(null, "hmm");
+
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        try{
-            con.close();            
-        }
-        catch (Exception e){
+        try {
+            con.close();
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
 
         setVisible(false);
-        otherInfoMenu m = new otherInfoMenu();
+        addFeesData m = new addFeesData();
         m.setVisible(true);
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
-        setVisible(false);
-        addFeesData m = new addFeesData();
-        m.setVisible(true);
-    }//GEN-LAST:event_jLabel20MouseClicked
-
     private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
-             String name = jTextField4.getText().trim();
-            try{
+
+        String name = jTextField4.getText().trim();
+        if (name.length() > 0) {
+            // Fetching students with like clause and populating the table
+            try {
                 sql = "SELECT students.id as 'Student ID', name as 'Student Name', sectionName as 'Section', fields.field as 'Field' from students "
                         + "inner join sections on section = sections.id "
                         + "inner join fields on students.field = fields.id "
-                        + "where name like '%"+name+"%'";
-           
+                        + "where name like '%" + name + "%'";
+
                 ps = con.prepareStatement(sql);
-//                ps.setString(1, name);
                 rs = ps.executeQuery();
-                jTable1.setEnabled(false);                
+                jTable1.setEnabled(false);
                 jTable1.setModel(DbUtils.resultSetToTableModel(rs));
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
-            }
-            finally{
+            } finally {
                 try {
                     rs.close();
                     ps.close();;
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
+        } else {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+        }
+
     }//GEN-LAST:event_jTextField4KeyTyped
 
     /**
@@ -253,10 +214,7 @@ public class findStudentId extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

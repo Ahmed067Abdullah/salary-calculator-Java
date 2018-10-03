@@ -11,44 +11,37 @@ public class addStudent extends javax.swing.JFrame {
     ResultSet rs;
     PreparedStatement ps;
     String sql;
-    
+
     public addStudent() {
         super("New Student");
         initComponents();
-    
+
         con = DBConnection.connect();
         sql = "Select sectionName from sections";
-        try
-        {
+        try {
             // To fill sections drop down
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 jComboBox6.addItem(rs.getString("sectionName"));
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 rs.close();
                 ps.close();
                 con.close();
-            } 
-            catch (Exception e)
-            {
-               JOptionPane.showMessageDialog(null, e);  
-            } 
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
     }
-    
-    public boolean isNumeric(String str){
-        return str.matches("^\\d+$");  
+
+    public boolean isNumeric(String str) {
+        return str.matches("^\\d+$");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -257,65 +250,58 @@ public class addStudent extends javax.swing.JFrame {
         int section = jComboBox6.getSelectedIndex();
 
         // Checking for empty fields
-        if(jComboBox6.getItemCount() == 0){
-            JOptionPane.showMessageDialog(null, "No section available");                  
-        }
-        else if(name.equals("") || id.equals("")|| (!jRadioButton1.isSelected() && !jRadioButton2.isSelected())){
-            JOptionPane.showMessageDialog(null, "Some details are missing");            
-        }
-        // Checking for types other than integer
-        else if(!isNumeric(id) || isNumeric(name)){
-            JOptionPane.showMessageDialog(null, "Invalid input");             
-        }
-        else{
-         try{
-            // Checking for duplicate teacher name
-            con = DBConnection.connect();
-            boolean flag = true;
-            sql = "Select name from students where id = ?";
-            ps = con.prepareStatement(sql);
-            ps.setString(1,id);
-            rs = ps.executeQuery();
-            while(rs.next()){
-                flag = false;
-                break;
-            }
-            if(flag){
-                
-                Section s = new Section();
-                int secId = s.getSectionId((String)jComboBox6.getSelectedItem());
-                int fieldId = jRadioButton1.isSelected() ? 0 : 1;
-                // If no duplicate found then insert
-                sql = "INSERT INTO students (id, name, section, field) VALUES(?, ? , ?, ?);";
-                ps = con.prepareStatement(sql); 
+        if (jComboBox6.getItemCount() == 0) {
+            JOptionPane.showMessageDialog(null, "No section available");
+        } else if (name.equals("") || id.equals("") || (!jRadioButton1.isSelected() && !jRadioButton2.isSelected())) {
+            JOptionPane.showMessageDialog(null, "Some details are missing");
+        } // Checking for types other than integer
+        else if (!isNumeric(id) || isNumeric(name)) {
+            JOptionPane.showMessageDialog(null, "Invalid input");
+        } else {
+            try {
+                // Checking for duplicate student id
+                con = DBConnection.connect();
+                boolean flag = true;
+                sql = "Select name from students where id = ?";
+                ps = con.prepareStatement(sql);
                 ps.setString(1, id);
-                ps.setString(2, name);
-                ps.setInt(3, secId);
-                ps.setInt(4, fieldId);
-                ps.execute();
-                
-                JOptionPane.showMessageDialog(null, "Student added successfully");
-                textField4.setText("");
-                textField5.setText("");
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "ID Already in use!");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    flag = false;
+                    break;
+                }
+                if (flag) {
+
+                    Section s = new Section();
+                    int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
+                    int fieldId = jRadioButton1.isSelected() ? 0 : 1;
+                    // If no duplicate found then insert
+                    sql = "INSERT INTO students (id, name, section, field) VALUES(?, ? , ?, ?);";
+                    ps = con.prepareStatement(sql);
+                    ps.setString(1, id);
+                    ps.setString(2, name);
+                    ps.setInt(3, secId);
+                    ps.setInt(4, fieldId);
+                    ps.execute();
+
+                    JOptionPane.showMessageDialog(null, "Student added successfully");
+                    textField4.setText("");
+                    textField5.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "ID Already in use!");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
+                try {
+                    rs.close();
+                    ps.close();
+                    con.close();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
             }
         }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }
-        finally{
-            try{
-                rs.close();
-                ps.close();
-                con.close();
-            }
-            catch(Exception e){
-                JOptionPane.showMessageDialog(null, e);                
-            }
-        }   
-    }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void textField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField3ActionPerformed

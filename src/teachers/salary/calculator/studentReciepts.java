@@ -8,16 +8,16 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class studentReciepts extends javax.swing.JFrame {
-    
+
     Connection con;
-    ResultSet rs,rsA,rsN;
+    ResultSet rs, rsA, rsN;
     PreparedStatement ps;
     String sql;
-    
+
     public studentReciepts() {
         super("Reciepts List");
         initComponents();
-    
+
     }
 
     @SuppressWarnings("unchecked")
@@ -170,71 +170,68 @@ public class studentReciepts extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         String id = jTextField4.getText().trim();
-        int rowCount = 0;
-        if(id.equals("")){
+        if (id.equals("")) {
             JOptionPane.showMessageDialog(null, "Enter Student ID");
-        }
-        else{
-                try{
-                    con = DBConnection.connect();                    
-                    String slipNo = "",monFee = "0",adFee,nFee;
-                    sql = "Select count(*) as 'count' from studentfees where std_id = ? ";
+        } else {
+            try {
+                // Fetching number of reciepts for given students
+                con = DBConnection.connect();
+                String slipNo = "", monFee = "0", adFee, nFee;
+
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                jTable1.setEnabled(false);
+
+                // Setting row count zero for every new search
+                model.setRowCount(0);
+
+                // Fetching all slips data for given student
+                sql = "Select slip_no,fees from studentfees where std_id = ?";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, id);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    // Settinh default values for adFee and notesFee
+                    adFee = "0";
+                    nFee = "0";
+                    slipNo = rs.getString("slip_no");
+                    monFee = rs.getString("fees");
+
+                    // Fetching admission fee, if found the update its value, else go with default 0 
+                    sql = "Select fees from admission_fees where slip_no = ?";
                     ps = con.prepareStatement(sql);
-                    ps.setString(1, id);
-                    rs = ps.executeQuery();
-                    while(rs.next()){
-                        rowCount = rs.getInt("count");
-                    }
-                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); 
-                    jTable1.setEnabled(false);
-                    model.setRowCount(0);
-                    
-                    sql = "Select slip_no,fees from studentfees where std_id = ?";
-                    ps = con.prepareStatement(sql);
-                    ps.setString(1, id);
-                    rs = ps.executeQuery();
-                    while(rs.next()){
-                        adFee = "0";
-                        nFee = "0";
-                        slipNo = rs.getString("slip_no");
-                        monFee = rs.getString("fees");
-                        
-                        sql = "Select fees from admission_fees where slip_no = ?";      
-                        ps = con.prepareStatement(sql);
-                        ps.setString(1, slipNo);
-                        rsA = ps.executeQuery();
-                        while(rsA.next()){
-                            adFee = rsA.getString("fees");
-                        }
-                        
-                        sql = "Select fees from notes_fees where slip_no = ?";      
-                        ps = con.prepareStatement(sql);
-                        ps.setString(1, slipNo);
-                        rsN = ps.executeQuery();
-                        while(rsN.next()){
-                            nFee = rsN.getString("fees");
-                        }
-                        model.insertRow(model.getRowCount(), new Object[]{slipNo,monFee,adFee,nFee});
-                    }
-                    if(jTable1.getRowCount() == 0){
-                        JOptionPane.showMessageDialog(null, "Sorry, No Reciepts Found");                    
+                    ps.setString(1, slipNo);
+                    rsA = ps.executeQuery();
+                    while (rsA.next()) {
+                        adFee = rsA.getString("fees");
                     }
 
-                    
+                    // Fetching notes fee, if found the update its value, else go with default 0                    
+                    sql = "Select fees from notes_fees where slip_no = ?";
+                    ps = con.prepareStatement(sql);
+                    ps.setString(1, slipNo);
+                    rsN = ps.executeQuery();
+                    while (rsN.next()) {
+                        nFee = rsN.getString("fees");
+                    }
+
+                    // Inserting new row in the table
+                    model.insertRow(model.getRowCount(), new Object[]{slipNo, monFee, adFee, nFee});
                 }
-                catch(Exception e){
+                if (jTable1.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Sorry, No Reciepts Found");
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
+                try {
+                    rs.close();
+                    ps.close();
+                    con.close();
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
-                finally{
-                    try {
-                        rs.close();
-                        ps.close();
-                        con.close();
-                    }
-                    catch (Exception e){
-                        JOptionPane.showMessageDialog(null, e);
-                    }
-                }
+            }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 

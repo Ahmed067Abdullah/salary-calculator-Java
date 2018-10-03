@@ -11,55 +11,50 @@ public class addFeesData extends javax.swing.JFrame {
     ResultSet rs;
     PreparedStatement ps;
     String sql;
+
     public addFeesData() {
         super("New Reciept");
         initComponents();
-        
+
         //Setting default values
         textField3.setText("4300");
         textField4.setText("0");
         textField5.setText("0");
+
         con = DBConnection.connect();
         // To get last slip no
         sql = "Select slip_no from studentfees order by id desc limit 1";
-        try
-        {  
+        try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             String slipStr;
             int slipInt;
-            while(rs.next()){
+            while (rs.next()) {
                 slipStr = rs.getString("slip_no");
                 slipInt = Integer.parseInt(slipStr);
                 slipInt++;
                 textField6.setText(rs.getString("slip_no"));
                 textField2.setText(Integer.toString(slipInt));
-                textField7.requestFocus();   
+                textField7.requestFocus();
                 break;
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 rs.close();
                 ps.close();
                 con.close();
-            } 
-            catch (Exception e)
-            {
-               JOptionPane.showMessageDialog(null, e);  
-            } 
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
     }
 
-    public boolean isNumeric(String str){
-        return str.matches("^\\d+$");  
+    public boolean isNumeric(String str) {
+        return str.matches("^\\d+$");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -239,7 +234,7 @@ public class addFeesData extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(38, 38, 38)
                 .addComponent(jButton7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
@@ -384,115 +379,102 @@ public class addFeesData extends javax.swing.JFrame {
         // Fetching values from input fields
         String slip_no = textField2.getText().trim();
         String student_id = textField7.getText().trim();
-        String student_name = textField1.getText().trim();        
+        String student_name = textField1.getText().trim();
         String monFee = textField3.getText().trim();
         String adFee = textField4.getText().trim();
         String noteFee = textField5.getText().trim();
-        
-        int slip_noI,monFeeI,adFeeI,noteFeeI,student_idI;
-        
+
+        int slip_noI, monFeeI, adFeeI, noteFeeI, student_idI;
+
         // Checking for empty fields
-        if(
-            slip_no.equals("") || 
-            student_id.equals("") || 
-            monFee.equals("") || 
-            adFee.equals("") || 
-            noteFee.equals("") 
-        )
-        {
+        if (slip_no.equals("")
+                || student_id.equals("")
+                || monFee.equals("")
+                || adFee.equals("")
+                || noteFee.equals("")) {
             JOptionPane.showMessageDialog(null, "Please Enter All Details!");
-        }
-        // Checking if student record is searched or not
-        else if(student_name.equals("")){
-            JOptionPane.showMessageDialog(null, "Please Verify Student ID Before Saving");            
-        }
-        //Checking if all fees are zero
-        else if(
-            monFee.equals("0") && 
-            adFee.equals("0") && 
-            noteFee.equals("0")
-        ){
-          JOptionPane.showMessageDialog(null, "All fees can't be 0");
-        }
-        
-        // Validating data type of fees and slip no
-        else if(
-            !(isNumeric(monFee) && 
-              isNumeric(adFee) && 
-              isNumeric(noteFee) && 
-              isNumeric(slip_no) &&
-              isNumeric(student_id))
-        ){
-          JOptionPane.showMessageDialog(null, "Invalid inputs");            
-        }
-        else
-        {
+        } // Checking if student record is searched or not
+        else if (student_name.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please Verify Student ID Before Saving");
+        } //Checking if all fees are zero
+        else if (monFee.equals("0")
+                && adFee.equals("0")
+                && noteFee.equals("0")) {
+            JOptionPane.showMessageDialog(null, "All fees can't be 0");
+        } // Validating data type of fees and slip no
+        else if (!(isNumeric(monFee)
+                && isNumeric(adFee)
+                && isNumeric(noteFee)
+                && isNumeric(slip_no)
+                && isNumeric(student_id))) {
+            JOptionPane.showMessageDialog(null, "Invalid inputs");
+        } else {
             // Converting fees and slip no into integers to check for negative values and further use 
             slip_noI = Integer.parseInt(slip_no);
             monFeeI = Integer.parseInt(monFee);
             adFeeI = Integer.parseInt(adFee);
             noteFeeI = Integer.parseInt(noteFee);
             student_idI = Integer.parseInt(student_id);
-            
+
             // Show error if any value is negative
-            if(slip_noI < 0 || monFeeI < 0 || adFeeI < 0 || noteFeeI < 0 || student_idI < 0){
-                JOptionPane.showMessageDialog(null, "Negative values are not allowed");         
-            }else{
-                try
-                {
+            if (slip_noI < 0 || monFeeI < 0 || adFeeI < 0 || noteFeeI < 0 || student_idI < 0) {
+                JOptionPane.showMessageDialog(null, "Negative values are not allowed");
+            } else {
+                try {
                     con = DBConnection.connect();
-                    
+
                     // Checking for duplicate slip no
                     boolean flag = false;
                     sql = "SELECT id from studentfees where slip_no = ?";
                     ps = con.prepareStatement(sql);
                     ps.setString(1, slip_no);
                     rs = ps.executeQuery();
-                    while(rs.next()){
+                    while (rs.next()) {
                         flag = true;
                     }
-                    if(flag)
+                    if (flag) {
                         JOptionPane.showMessageDialog(null, "Slip number already exists!");
-                    else{
+                    } else {
+                        // Only insert if not duplicate slip no
                         int month = jComboBox5.getSelectedIndex();
                         Section s = new Section();
-                     
+
                         sql = "Insert into studentfees (std_id, slip_no, fees,month) values(?,?,?,?);";
                         ps = con.prepareStatement(sql);
-                        ps.setInt(1,student_idI);
+                        ps.setInt(1, student_idI);
                         ps.setInt(2, slip_noI);
                         ps.setInt(3, monFeeI);
                         ps.setInt(4, month);
                         ps.execute();
-                    
+
                         int generatedId = -1;
-                        
+
                         // Fetching id of last inserted record
                         rs = ps.getGeneratedKeys();
-                        while(rs.next()){
+                        while (rs.next()) {
                             generatedId = rs.getInt(1);
-                        }                   
-                        
+                        }
+
                         // Only insert in admission fees table if fees is not zero or less
-                        if(adFeeI > 0){
+                        if (adFeeI > 0) {
                             sql = "Insert into admission_fees (slip_no, fees) values(?,?);";
                             ps = con.prepareStatement(sql);
-                            ps.setString(1,slip_no);
+                            ps.setString(1, slip_no);
                             ps.setInt(2, adFeeI);
-                            ps.execute();                        
+                            ps.execute();
                         }
                         // Only insert in notes fees table if fees is not zero or less                    
-                        if(noteFeeI > 0){
+                        if (noteFeeI > 0) {
                             sql = "Insert into notes_fees (slip_no, fees) values(?,?);";
                             ps = con.prepareStatement(sql);
-                            ps.setString(1,slip_no);
+                            ps.setString(1, slip_no);
                             ps.setInt(2, noteFeeI);
-                            ps.execute();    
+                            ps.execute();
                         }
-                        JOptionPane.showMessageDialog(null, "Record Entered Successfully!! \nID = "+Integer.toString(generatedId));                         
-                        
+                        JOptionPane.showMessageDialog(null, "Record Entered Successfully!! \nID = " + Integer.toString(generatedId));
+
                         // Setting up input field for the next record
-                        textField6.setText(Integer.toString(slip_noI));                            
+                        textField6.setText(Integer.toString(slip_noI));
                         slip_noI++;
                         textField1.setText("");
                         textField7.setText("");
@@ -502,19 +484,16 @@ public class addFeesData extends javax.swing.JFrame {
                         textField4.setText("0");
                         textField5.setText("0");
                         // buttonGroup1.clearSelection();
-                        textField7.requestFocus();   
-                    }                
-                }
-                catch(Exception e){
+                        textField7.requestFocus();
+                    }
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
-                }
-                finally{
+                } finally {
                     try {
                         rs.close();
                         ps.close();
                         con.close();
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, e);
                     }
                 }
@@ -525,7 +504,7 @@ public class addFeesData extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         setVisible(false);
         menu m = new menu();
-        m.setVisible(true);        
+        m.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
@@ -550,62 +529,56 @@ public class addFeesData extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         String id = textField7.getText().trim();
-        
+
         // Checking for empty fields
-        if(id.equals("")){
-            JOptionPane.showMessageDialog(null, "Please Enter ID");            
-        }
-        else if(!isNumeric(id)){
-            JOptionPane.showMessageDialog(null, "Invalid ID");            
-        }
-        else{
+        if (id.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please Enter ID");
+        } else if (!isNumeric(id)) {
+            JOptionPane.showMessageDialog(null, "Invalid ID");
+        } else {
             con = DBConnection.connect();
-                    
-                sql = "Select * from students where id = ?";
-                try{
-                    boolean flag = false;
-                    int fieldInt = 0, sectionInt = 0;
-                    String field, section, name = "";
-                  
-                    ps = con.prepareStatement(sql); 
-                    ps.setString(1, id);
-                    rs = ps.executeQuery();
-                    while(rs.next()){
-                        fieldInt = rs.getInt("field");
-                        sectionInt = rs.getInt("section");                        
-                        name = rs.getString("name");
-                        flag = true;
-                    }
-                    
-                    if(flag){
-                        Section s = new Section();
-                        section = s.getSectionName(sectionInt);
-                        field = fieldInt == 0 ? "Engineering" : "Medical";
-                        
-                        // Populating input fields with fetched data
-                        textField1.setText(name);
-                        textField9.setText(section);
-                        textField8.setText(field);                
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null, "Invalid ID, student not found");                       
-                    }
-                }    
-                catch(Exception e){
+
+            sql = "Select * from students where id = ?";
+            try {
+                boolean flag = false;
+                int fieldInt = 0, sectionInt = 0;
+                String field, section, name = "";
+
+                ps = con.prepareStatement(sql);
+                ps.setString(1, id);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    fieldInt = rs.getInt("field");
+                    sectionInt = rs.getInt("section");
+                    name = rs.getString("name");
+                    flag = true;
+                }
+
+                if (flag) {
+                    Section s = new Section();
+                    section = s.getSectionName(sectionInt);
+                    field = fieldInt == 0 ? "Engineering" : "Medical";
+
+                    // Populating input fields with fetched data
+                    textField1.setText(name);
+                    textField9.setText(section);
+                    textField8.setText(field);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid ID, student not found");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
+                try {
+                    rs.close();
+                    ps.close();
+                    con.close();
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
-                finally{
-                    try {
-                        rs.close();
-                        ps.close();
-                        con.close();
-                    }
-                    catch (Exception e){
-                        JOptionPane.showMessageDialog(null, e);
-                    }
-                }
-        }    
-        
+            }
+        }
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void textField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField8ActionPerformed
@@ -619,7 +592,7 @@ public class addFeesData extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         setVisible(false);
         findStudentId m = new findStudentId();
-        m.setVisible(true);        
+        m.setVisible(true);
 
     }//GEN-LAST:event_jButton7ActionPerformed
 

@@ -6,19 +6,21 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class addTeacher extends javax.swing.JFrame {
+
     Connection con;
     ResultSet rs;
     PreparedStatement ps;
     String sql;
-    
+
     public addTeacher() {
         super("New Teacher");
         initComponents();
     }
 
-    public boolean isNumeric(String str){
-        return str.matches("^\\d+$");  
+    public boolean isNumeric(String str) {
+        return str.matches("^\\d+$");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -176,58 +178,51 @@ public class addTeacher extends javax.swing.JFrame {
         String name = jTextField3.getText().trim().toLowerCase();
         int course = jComboBox1.getSelectedIndex();
         String pay = jTextField4.getText().trim();
-        
-        // Checking for empty fields
-        if(name.equals("") || pay.equals("")){
-            JOptionPane.showMessageDialog(null, "Some details are missing");            
-        }
 
-        // Checking for types other than integer
-        else if(!isNumeric(pay) || isNumeric(name)){
-            JOptionPane.showMessageDialog(null, "Invalid input");             
-        }
-        else{
-         try{
-            // Checking for duplicate teacher name
-            con = DBConnection.connect();
-            boolean flag = true;
-            sql = "Select id from teachers where t_name = ?";
-            ps = con.prepareStatement(sql);
-            ps.setString(1,name);
-            rs = ps.executeQuery();
-            while(rs.next()){
-                flag = false;
-                break;
-            }
-            if(flag){   
-                // If no duplicate found then insert
-                sql = "INSERT INTO teachers (t_name,t_course,t_breakup) VALUES(?, ? , ?);";
-                ps = con.prepareStatement(sql); 
+        // Checking for empty fields
+        if (name.equals("") || pay.equals("")) {
+            JOptionPane.showMessageDialog(null, "Some details are missing");
+        } // Checking for types other than integer
+        else if (!isNumeric(pay) || isNumeric(name)) {
+            JOptionPane.showMessageDialog(null, "Invalid input");
+        } else {
+            try {
+                // Checking for duplicate teacher name
+                con = DBConnection.connect();
+                boolean flag = true;
+                sql = "Select id from teachers where t_name = ?";
+                ps = con.prepareStatement(sql);
                 ps.setString(1, name);
-                ps.setInt(2, course);
-                ps.setString(3, pay);
-                ps.execute();
-                
-                JOptionPane.showMessageDialog(null, "Teacher added successfully");
-                jTextField3.setText("");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    flag = false;
+                    break;
+                }
+                if (flag) {
+                    // If no duplicate found then insert
+                    sql = "INSERT INTO teachers (t_name,t_course,t_breakup) VALUES(?, ? , ?);";
+                    ps = con.prepareStatement(sql);
+                    ps.setString(1, name);
+                    ps.setInt(2, course);
+                    ps.setString(3, pay);
+                    ps.execute();
+
+                    JOptionPane.showMessageDialog(null, "Teacher added successfully");
+                    jTextField3.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Name Already in use!");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            } finally {
+                try {
+                    rs.close();
+                    ps.close();
+                    con.close();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Name Already in use!");
-            }
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }
-        finally{
-            try{
-                rs.close();
-                ps.close();
-                con.close();
-            }
-            catch(Exception e){
-                JOptionPane.showMessageDialog(null, e);                
-            }
-        }   
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 

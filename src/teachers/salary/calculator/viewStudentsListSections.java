@@ -12,39 +12,31 @@ public class viewStudentsListSections extends javax.swing.JFrame {
     ResultSet rs;
     PreparedStatement ps;
     String sql;
-    
+
     public viewStudentsListSections() {
         super("Students List");
         initComponents();
-        
+
         con = DBConnection.connect();
-        
+
         // Populating sections combo box
         sql = "Select sectionName from sections";
-        try
-        {
+        try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 jComboBox6.addItem(rs.getString("sectionName"));
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        finally
-        {
-            try 
-            {
+        } finally {
+            try {
                 rs.close();
                 ps.close();
                 con.close();
-            } 
-            catch (Exception e)
-            {
-               JOptionPane.showMessageDialog(null, e);  
-            } 
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
     }
 
@@ -215,49 +207,45 @@ public class viewStudentsListSections extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
-            String monthConflict,sectionIdConflict;
-            int month = jComboBox5.getSelectedIndex();
-            if(month == 12){
-                monthConflict = "";
-            }
-            else{
-                monthConflict = " and month = "+month;
-            }
+        String monthConflict, sectionIdConflict;
+        int month = jComboBox5.getSelectedIndex();
+        if (month == 12) {
+            monthConflict = "";
+        } else {
+            monthConflict = " and month = " + month;
+        }
 
-            con = DBConnection.connect();
-            
-            try{
-                Section s = new Section();
-                boolean flag3 = false;
+        con = DBConnection.connect();
 
-                // Calling getSectionId() to get secId of selected section
-                int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
-                
-                sectionIdConflict = "section = "+secId + " and ";
+        try {
+            Section s = new Section();
+            boolean flag3 = false;
 
-               
-                    sql = "Select students.id as 'Student ID',slip_no as 'Slip Number',name as 'Student Name',fees as 'Fees',fields.field as 'Field' from studentfees "
-                            + "inner join students on studentfees.std_id = students.id "
-                            + "inner join fields on students.field = fields.id "
-                            + "where "+ sectionIdConflict +" fees > 0 " + monthConflict;
-                    ps = con.prepareStatement(sql);
-                    rs = ps.executeQuery();
-                    jTable1.setEnabled(false);
-                    jTable1.setModel(DbUtils.resultSetToTableModel(rs));
-            }
-            catch(Exception e){
+            // Calling getSectionId() to get secId of selected section
+            int secId = s.getSectionId((String) jComboBox6.getSelectedItem());
+
+            sectionIdConflict = "section = " + secId + " and ";
+
+            // Fetching students of the selected section for the given month
+            sql = "Select students.id as 'Student ID',slip_no as 'Slip Number',name as 'Student Name',fees as 'Fees',fields.field as 'Field' from studentfees "
+                    + "inner join students on studentfees.std_id = students.id "
+                    + "inner join fields on students.field = fields.id "
+                    + "where " + sectionIdConflict + " fees > 0 " + monthConflict;
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            jTable1.setEnabled(false);
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                ps.close();
+                con.close();
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
             }
-            finally{
-                try {
-                    rs.close();
-                    ps.close();
-                    con.close();
-                }
-                catch (Exception e){
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            }
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed

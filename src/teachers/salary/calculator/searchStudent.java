@@ -6,28 +6,38 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class searchStudent extends javax.swing.JFrame {
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     String sql;
-    
+
     public searchStudent() {
+        super("Search Student");
         initComponents();
     }
 
-    
-     
-    public void clearFields(){
+    public void clearFields() {
         textField2.setText("");
-//        textField3.setText("");
-//        textField4.setText("");
-//        textField5.setText("");
-//        textField6.setText("");
-//        textField7.setText("");
-//        textField8.setText("");
-//        textField9.setText("");
-//        textField10.setText("");         
+        textField3.setText("");
+        textField4.setText("");
+        textField5.setText("");
+        textField6.setText("");
+        textField7.setText("");
+        textField8.setText("");
+        textField9.setText("");
+        textField10.setText("");
+        textField11.setText("");
+        textField12.setText("");
+        textField13.setText("");
+        textField14.setText("");
+        textField15.setText("");
+        textField16.setText("");
+        textField17.setText("");
+        textField18.setText("");
+        textField19.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -501,120 +511,115 @@ public class searchStudent extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         String id = textField2.getText().trim();
         // Checking for empty fields
-        if(id.equals("")){
+        if (id.equals("")) {
             clearFields();
             JOptionPane.showMessageDialog(null, "Enter Student ID");
-        }
-        else{
+        } else {
             con = DBConnection.connect();
             int flag = 0;
-                sql = "Select * from students where students.id = ?";
-                try{
-                    ps = con.prepareStatement(sql);
-                    ps.setString(1, id);
-                    rs = ps.executeQuery();
-                    while(rs.next()){
-                        flag = 1;
-                        break;
+            sql = "Select * from students where students.id = ?";
+            try {
+                // Fetching student data
+                ps = con.prepareStatement(sql);
+                ps.setString(1, id);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    flag = 1;
+                    break;
+                }
+                // If not found then show error
+                if (flag == 0) {
+                    clearFields();
+                    con.close();
+                    throw new resultNotFoundException("Invalid ID, Record not found");
+                } else {
+                    // continue if found
+                    int secId = rs.getInt("section");
+                    int fieldId = rs.getInt("field");
+                    String name = rs.getString("name");
+                    String std_id = rs.getString("id");
+
+                    Section s = new Section();
+                    String secName = s.getSectionName(secId);
+
+                    String field = fieldId == 0 ? "Engineering" : "Medical";
+
+                    // Populating input fields with fetched data
+                    textField2.setText(id);
+                    textField3.setText(name);
+                    textField4.setText(secName);
+                    textField5.setText(field);
+
+                    String fees;
+                    String monFeesArray[] = new String[14];
+
+                    // Run loop for 12 times, search for each month's fees in each iteration, if found then override, else go with default value
+                    for (int i = 0; i < 12; i++) {
+                        fees = "0";
+                        sql = "Select fees from studentfees where std_id = ? and month = ?";
+                        ps = con.prepareStatement(sql);
+                        ps.setString(1, id);
+                        ps.setInt(2, i);
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            fees = rs.getString("fees");
+                            break;
+                        }
+                        monFeesArray[i] = fees;
                     }
-                    if(flag == 0){
-                        clearFields();
-                        con.close();
-                        throw new resultNotFoundException("Invalid ID, Record not found");
-                    }
-                    else{
-                        int secId = rs.getInt("section");
-                        int fieldId = rs.getInt("field");
-                        String name = rs.getString("name");
-                        String std_id = rs.getString("id");
-                        
-                        Section s = new Section();
-                        String secName = s.getSectionName(secId);
-                
-                        String field = fieldId == 0 ? "Engineering" : "Medical";
-                        
-                // Populating input fields with fetched data
-                textField2.setText(id);
-                textField3.setText(name);
-                textField4.setText(secName);
-                textField5.setText(field);
-                
-                String fees;
-                String monFeesArray[] = new String[14];  
-                for(int i = 0 ; i < 12 ; i++){
+
+                    // Fetching notes fees for given student, if found then push in array, else go with the default
                     fees = "0";
-                    sql = "Select fees from studentfees where std_id = ? and month = ?";                    
+                    sql = "Select notes_fees.fees as 'fees' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where std_id = ?";
                     ps = con.prepareStatement(sql);
                     ps.setString(1, id);
-                    ps.setInt(2, i);
                     rs = ps.executeQuery();
-                    while(rs.next()){
+                    while (rs.next()) {
                         fees = rs.getString("fees");
                         break;
                     }
-                    monFeesArray[i] = fees;   
-                }
-                
-                fees = "0";
-                sql = "Select notes_fees.fees as 'fees' from studentfees inner join notes_fees on studentfees.slip_no = notes_fees.slip_no where std_id = ?";                    
-                ps = con.prepareStatement(sql);
-                ps.setString(1, id);
-                rs = ps.executeQuery();
-                while(rs.next()){
-                    fees = rs.getString("fees");
-                    break;
-                }
-                monFeesArray[12] = fees;
-                
-                fees = "0";
-                sql = "Select admission_fees.fees as 'fees' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where std_id = ?";                    
-                ps = con.prepareStatement(sql);
-                ps.setString(1, id);
-                rs = ps.executeQuery();
-                while(rs.next()){
-                    fees = rs.getString("fees");
-                    break;
-                }
-                monFeesArray[13] = fees;
-                
-                // setting admission and notes fees
-                textField7.setText(monFeesArray[12]);
-                textField6.setText(monFeesArray[13]);                
-                // Setting fees of months
-                textField8.setText(monFeesArray[0]);
-                textField9.setText(monFeesArray[1]);
-                textField10.setText(monFeesArray[2]);
-                textField11.setText(monFeesArray[3]);
-                textField12.setText(monFeesArray[4]);
-                textField13.setText(monFeesArray[5]);
-                textField14.setText(monFeesArray[6]);
-                textField15.setText(monFeesArray[7]);
-                textField16.setText(monFeesArray[8]);
-                textField17.setText(monFeesArray[9]);
-                textField18.setText(monFeesArray[10]);
-                textField19.setText(monFeesArray[11]);
-                
-//                textField6.setText(month);
-//                textField7.setText(n.withCommas(Integer.parseInt(fees)));
-//                textField8.setText(n.withCommas(Integer.parseInt(adFee)));
-//                textField9.setText(n.withCommas(Integer.parseInt(noteFee)));
-//                textField10.setText(field);
-//                textField11.setText(std_id);
+                    monFeesArray[12] = fees;
+
+                    // Fetching admission fees for given student, if found then push in array, else go with the default
+                    fees = "0";
+                    sql = "Select admission_fees.fees as 'fees' from studentfees inner join admission_fees on studentfees.slip_no = admission_fees.slip_no where std_id = ?";
+                    ps = con.prepareStatement(sql);
+                    ps.setString(1, id);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        fees = rs.getString("fees");
+                        break;
                     }
+                    monFeesArray[13] = fees;
+
+                    // setting admission and notes fees
+                    textField7.setText(monFeesArray[12]);
+                    textField6.setText(monFeesArray[13]);
+
+                    // Setting fees of months
+                    textField8.setText(monFeesArray[0]);
+                    textField9.setText(monFeesArray[1]);
+                    textField10.setText(monFeesArray[2]);
+                    textField11.setText(monFeesArray[3]);
+                    textField12.setText(monFeesArray[4]);
+                    textField13.setText(monFeesArray[5]);
+                    textField14.setText(monFeesArray[6]);
+                    textField15.setText(monFeesArray[7]);
+                    textField16.setText(monFeesArray[8]);
+                    textField17.setText(monFeesArray[9]);
+                    textField18.setText(monFeesArray[10]);
+                    textField19.setText(monFeesArray[11]);
                 }
-            catch(resultNotFoundException e){
+            } catch (resultNotFoundException e) {
                 JOptionPane.showMessageDialog(null, e);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
-            }
-            finally{
+            } finally {
                 try {
                     rs.close();
                     ps.close();
                     con.close();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e);
                 }
             }
