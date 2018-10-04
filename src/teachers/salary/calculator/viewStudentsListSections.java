@@ -227,7 +227,7 @@ public class viewStudentsListSections extends javax.swing.JFrame {
             sectionIdConflict = "section = " + secId + " and ";
 
             // Fetching students of the selected section for the given month
-            sql = "Select students.id as 'Student ID',slip_no as 'Slip Number',name as 'Student Name',fees as 'Fees',fields.field as 'Field' from studentfees "
+            sql = "Select students.id as 'Student ID',slip_no as 'Slip Number',upper(substr(name, 1, 1))||substr(name, 2) as 'Student Name',fees as 'Fees',fields.field as 'Field' from studentfees "
                     + "inner join students on studentfees.std_id = students.id "
                     + "inner join fields on students.field = fields.id "
                     + "where " + sectionIdConflict + " fees > 0 " + monthConflict;

@@ -559,8 +559,10 @@ public class addFeesData extends javax.swing.JFrame {
                     section = s.getSectionName(sectionInt);
                     field = fieldInt == 0 ? "Engineering" : "Medical";
 
+                    Teacher t = new Teacher();
+          
                     // Populating input fields with fetched data
-                    textField1.setText(name);
+                    textField1.setText(t.capitalizeTeacherName(name));
                     textField9.setText(section);
                     textField8.setText(field);
                 } else {

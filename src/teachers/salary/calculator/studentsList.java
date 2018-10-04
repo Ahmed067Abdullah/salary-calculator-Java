@@ -452,7 +452,7 @@ public class studentsList extends javax.swing.JFrame {
                     jTextField4.setText(id);
                     jTextField3.setText(t.capitalizeTeacherName(name));                
                 
-                    sql = "Select students.id as 'Student ID',slip_no as 'Slip Number',name as 'Student Name',fees as 'Fees',fields.field as 'Field' from studentfees "
+                    sql = "Select students.id as 'Student ID',slip_no as 'Slip Number',upper(substr(name, 1, 1))||substr(name, 2) as 'Student Name',fees as 'Fees',fields.field as 'Field' from studentfees "
                             + "inner join students on studentfees.std_id = students.id "
                             + "inner join fields on students.field = fields.id "
                             + "where "+ sectionIdsListConflict +" fees > 0 " + monthConflict + fieldConflict;

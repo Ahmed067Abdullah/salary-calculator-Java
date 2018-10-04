@@ -449,10 +449,12 @@ public class searchSlip extends javax.swing.JFrame {
 
                 Number n = new Number();
 
+                Teacher t = new Teacher();
+
                 // Populating input fields with fetched data
                 textField2.setText(id);
                 textField3.setText(slipNo);
-                textField4.setText(name);
+                textField4.setText(t.capitalizeTeacherName(name));
                 textField5.setText(secName);
                 textField6.setText(month);
                 textField7.setText(n.withCommas(Integer.parseInt(fees)));

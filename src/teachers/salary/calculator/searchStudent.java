@@ -544,9 +544,10 @@ public class searchStudent extends javax.swing.JFrame {
 
                     String field = fieldId == 0 ? "Engineering" : "Medical";
 
+                    Teacher t = new Teacher();                    
                     // Populating input fields with fetched data
                     textField2.setText(id);
-                    textField3.setText(name);
+                    textField3.setText(t.capitalizeTeacherName(name));
                     textField4.setText(secName);
                     textField5.setText(field);
 
