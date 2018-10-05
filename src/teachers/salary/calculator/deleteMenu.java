@@ -97,7 +97,7 @@ public class deleteMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if(JOptionPane.showConfirmDialog(null, "This is will delete all the existing student slips, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
+        if(JOptionPane.showConfirmDialog(null, "This is will delete all the existing students, reciepts and sections data, Are you sure want to continue", "Warning", JOptionPane.YES_NO_CANCEL_OPTION) == JOptionPane.YES_OPTION){
             try{                
                 con = DBConnection.connect();
                 sql = "DELETE from studentfees";
